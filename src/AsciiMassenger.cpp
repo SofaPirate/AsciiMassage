@@ -1,3 +1,5 @@
+//#define DEBUG_TOM
+
 //ADDED FOR COMPATIBILITY WITH WIRING
 extern "C" {
   #include <stdlib.h>
@@ -17,7 +19,7 @@ void AsciiMassenger::flush()
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
-  Serial.println(v);
+ 
   return v;
 }
 
@@ -25,7 +27,7 @@ int16_t AsciiMassenger::nextInt(bool* error)
 {
   int16_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
-  Serial.println(v);
+  
   return v;
 }
 
@@ -33,7 +35,7 @@ int32_t AsciiMassenger::nextLong(bool* error)
 {
   int32_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
-  Serial.println(v);
+  
   return v;
 }
 
@@ -41,7 +43,7 @@ float AsciiMassenger::nextFloat(bool* error)
 {
   float v;
   _nextBlock(false, (uint8_t*)&v, sizeof(float), error);
-  Serial.println(v);
+ 
   return v;
 }
 
@@ -49,7 +51,7 @@ double AsciiMassenger::nextDouble(bool* error)
 {
   double v;
   _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
-  Serial.println(v);
+  
   return v;
 }
 
@@ -93,6 +95,11 @@ void AsciiMassenger::sendEnd()
 
 bool AsciiMassenger::_process(int streamByte)
 {
+
+	#ifdef DEBUG_TOM
+     Serial.println(streamByte);
+	#endif
+
   // Check if we've reached the end of the buffer.
   if (_messageSize >= (MASSENGER_BUFFERSIZE-1))
   {
