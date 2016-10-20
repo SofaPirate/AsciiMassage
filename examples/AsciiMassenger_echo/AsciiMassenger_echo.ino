@@ -33,13 +33,13 @@ void echo() {
   int i = msg.nextInt(); // ...read the next element as an int...
   float f = msg.nextFloat();
   byte b = msg.nextByte();
-  double d = msg.nextDouble();
+
 
   msg.sendBegin("echo");
   msg.sendInt(i);
   msg.sendFloat(f);
   msg.sendByte(b);
-  msg.sendDouble(d);
+  
   msg.sendEnd();
   
 
