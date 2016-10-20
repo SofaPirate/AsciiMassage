@@ -8,18 +8,18 @@ extern "C" {
 #include "AsciiMassenger.h"
 
 AsciiMassenger::AsciiMassenger(Stream* stream)
-  : Massenger(stream) {}
+  : BufferedMassenger(stream) {}
 
 void AsciiMassenger::flush()
 {
-  Massenger::flush();
+  BufferedMassenger::flush();
   _nextIndex = 0;
 }
 
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
- 
+
   return v;
 }
 
@@ -27,7 +27,7 @@ int16_t AsciiMassenger::nextInt(bool* error)
 {
   int16_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
-  
+
   return v;
 }
 
@@ -35,7 +35,7 @@ int32_t AsciiMassenger::nextLong(bool* error)
 {
   int32_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
-  
+
   return v;
 }
 
@@ -43,15 +43,7 @@ float AsciiMassenger::nextFloat(bool* error)
 {
   float v;
   _nextBlock(false, (uint8_t*)&v, sizeof(float), error);
- 
-  return v;
-}
 
-double AsciiMassenger::nextDouble(bool* error)
-{
-  double v;
-  _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
-  
   return v;
 }
 
@@ -80,13 +72,6 @@ void AsciiMassenger::sendFloat(float value)
 {
   sendDouble(value);
 }
-
-void AsciiMassenger::sendDouble(double value)
-{
-  _stream->write(' ');
-  _stream->print(value);
-}
-
 
 void AsciiMassenger::sendEnd()
 {
