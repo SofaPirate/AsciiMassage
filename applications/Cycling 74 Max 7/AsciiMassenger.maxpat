@@ -38,11 +38,35 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 319.0, 100.0, 150.0, 20.0 ],
+					"style" : "",
+					"text" : "Sent to serial"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 162.0, 284.0, 150.0, 20.0 ],
+					"style" : "",
+					"text" : "Received from serial"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-4",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 169.0, 317.0, 69.0, 22.0 ],
+					"patching_rect" : [ 201.0, 348.0, 69.0, 22.0 ],
 					"style" : "",
 					"text" : "print what?"
 				}
@@ -109,7 +133,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 138.0, 92.0, 53.0, 22.0 ],
+					"patching_rect" : [ 138.0, 99.0, 53.0, 22.0 ],
 					"style" : "",
 					"text" : "dw 13 0"
 				}
@@ -122,7 +146,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 68.0, 92.0, 53.0, 22.0 ],
+					"patching_rect" : [ 68.0, 99.0, 53.0, 22.0 ],
 					"style" : "",
 					"text" : "dw 13 1"
 				}
@@ -131,12 +155,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-10",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 63.0, 35.0, 417.0, 20.0 ],
+					"patching_rect" : [ 55.0, 23.0, 424.0, 34.0 ],
 					"style" : "",
-					"text" : "Upload the \"AsciiMassenger_dw_dr_ar_aw\" example to your board"
+					"text" : "Upload the \"AsciiMassenger_dw_dr_ar_aw\" example to your board to use the following massage set."
 				}
 
 			}
@@ -901,6 +926,7 @@
 							}
 , 							{
 								"box" : 								{
+									"active" : 0,
 									"bgcolor" : [ 0.666667, 0.666667, 0.666667, 1.0 ],
 									"bgoncolor" : [ 0.454902, 0.772549, 0.384314, 1.0 ],
 									"id" : "obj-9",
@@ -1176,7 +1202,7 @@
 								"box" : 								{
 									"allowdrag" : 0,
 									"id" : "obj-19",
-									"items" : [ "(serial", "port)", ",", "COM12", ",", "COM3", ",", "COM11" ],
+									"items" : [ "(serial", "port)", ",", "COM12", ",", "COM11", ",", "COM14" ],
 									"maxclass" : "umenu",
 									"numinlets" : 1,
 									"numoutlets" : 3,
