@@ -70,7 +70,8 @@ void AsciiMassenger::sendLong(int32_t value)
 
 void AsciiMassenger::sendFloat(float value)
 {
-  sendDouble(value);
+  _stream->write(' ');
+  _stream->print(value);
 }
 
 void AsciiMassenger::sendEnd()
