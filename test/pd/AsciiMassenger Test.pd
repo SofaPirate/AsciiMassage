@@ -1,0 +1,16 @@
+#N canvas 638 175 736 527 10;
+#X msg 233 170 devices;
+#X msg 252 200 open 6 \, baud 57600;
+#X obj 192 430 print;
+#X obj 163 267 comport;
+#X msg 279 225 close;
+#X obj 187 373 tof/from_ascii_code 10;
+#X obj 113 135 tof/to_ascii_code 10;
+#X msg 115 70 echo 57 5.8 12;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 0;
