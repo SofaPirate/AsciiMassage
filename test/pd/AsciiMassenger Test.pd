@@ -1,4 +1,4 @@
-#N canvas 812 100 736 527 10;
+#N canvas 411 134 1171 527 10;
 #X msg 233 170 devices;
 #X obj 163 267 comport;
 #X msg 279 225 close;
@@ -59,6 +59,18 @@
 #X obj 326 19 metro 100;
 #X obj 431 24 metro 70;
 #X obj 573 198 metro 70;
+#X obj 865 231 mrpeach/slipenc 65536;
+#X obj 849 178 packOSC;
+#X msg 767 81 /echo 0 5.8 12 1 2 3 4 5 6 7 8 9 10 11 12 13 14 16 17
+18 19;
+#X obj 865 261 length;
+#X msg 896 110 /echo 45 5.8 12;
+#X text 767 56 Compare message lengths with OSC;
+#X floatatom 858 308 5 0 0 0 - - -;
+#X obj 989 168 tof/to_ascii_code 10;
+#X obj 1032 242 length;
+#X floatatom 1025 289 5 0 0 0 - - -;
+#X msg 1010 122 /echo 32454 6.3284;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 1 1 31 0;
@@ -107,3 +119,14 @@
 #X connect 44 0 8 0;
 #X connect 45 0 17 0;
 #X connect 46 0 23 0;
+#X connect 47 0 50 0;
+#X connect 48 0 47 0;
+#X connect 49 0 48 0;
+#X connect 49 0 54 0;
+#X connect 50 0 53 0;
+#X connect 51 0 48 0;
+#X connect 51 0 54 0;
+#X connect 54 0 55 0;
+#X connect 55 0 56 0;
+#X connect 57 0 54 0;
+#X connect 57 0 48 0;
