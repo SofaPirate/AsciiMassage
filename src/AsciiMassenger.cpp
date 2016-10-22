@@ -8,13 +8,56 @@ extern "C" {
 #include "AsciiMassenger.h"
 
 AsciiMassenger::AsciiMassenger(Stream* stream)
-  : BufferedMassenger(stream) {}
+  : Massenger(stream) {
+  	flush();
+  }
 
 void AsciiMassenger::flush()
 {
-  BufferedMassenger::flush();
-  _nextIndex = 0;
+   _messageSize = 0;
+   _nextIndex = 0;
+   _needToFlush = false;
 }
+
+
+   bool AsciiMassenger::receive()
+  {
+
+    if ( _needToFlush) {
+      flush();
+    }
+    // Read stream.
+    while (_stream->available())
+    {
+      if (_process(_stream->read())) {
+        _needToFlush = true;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+     bool AsciiMassenger::dispatch(const char* address, callbackFunction callback)
+  {
+    // Verity if address matches beginning of buffer.
+    bool matches = (strcmp(_buffer, address) == 0);
+    if (matches) callback();
+    return matches;
+  }
+
+
+    // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
+  bool AsciiMassenger::_write(uint8_t value)
+  {
+    if (_messageSize >= MASSENGER_BUFFERSIZE)
+      return false;
+    _buffer[_messageSize] = value;
+    _messageSize++;
+    return true;
+  }
+
+
 
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
@@ -82,16 +125,18 @@ void AsciiMassenger::sendEnd()
 bool AsciiMassenger::_process(int streamByte)
 {
 
-	#ifdef DEBUG_TOM
-     Serial.println(streamByte);
-	#endif
+	
 
   // Check if we've reached the end of the buffer.
   if (_messageSize >= (MASSENGER_BUFFERSIZE-1))
   {
     _messageSize = MASSENGER_BUFFERSIZE-1;
     _write(0);
-    return true;
+    flush();
+    #ifdef DEBUG_TOM
+       _stream->println("Too long");
+	#endif
+    return false;
   }
 
   // Process byte.
@@ -107,10 +152,18 @@ bool AsciiMassenger::_process(int streamByte)
         // Position _nextIndex after command address string.
         _nextIndex = 0;
         _updateNextIndex();
-
+ #ifdef DEBUG_TOM
+       _stream->print("ok ");
+       _stream->println(_buffer);
+	#endif
         return true;
       }
+         #ifdef DEBUG_TOM
+       _stream->println("bad");
+	#endif
+      flush();
       break;
+    case 0 :
     case ' ':
       // Put null character instead of space to easily use atoi()/atof() functions.
       if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
