@@ -8,56 +8,16 @@ extern "C" {
 #include "AsciiMassenger.h"
 
 AsciiMassenger::AsciiMassenger(Stream* stream)
-  : Massenger(stream) {
+  : BufferedMassenger(stream) {
   	flush();
   }
 
 void AsciiMassenger::flush()
 {
-   _messageSize = 0;
+  BufferedMassenger::flush();
    _nextIndex = 0;
    _needToFlush = false;
 }
-
-
-   bool AsciiMassenger::receive()
-  {
-
-    if ( _needToFlush) {
-      flush();
-    }
-    // Read stream.
-    while (_stream->available())
-    {
-      if (_process(_stream->read())) {
-        _needToFlush = true;
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-     bool AsciiMassenger::dispatch(const char* address, callbackFunction callback)
-  {
-    // Verity if address matches beginning of buffer.
-    bool matches = (strcmp(_buffer, address) == 0);
-    if (matches) callback();
-    return matches;
-  }
-
-
-    // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
-  bool AsciiMassenger::_write(uint8_t value)
-  {
-    if (_messageSize >= MASSENGER_BUFFERSIZE)
-      return false;
-    _buffer[_messageSize] = value;
-    _messageSize++;
-    return true;
-  }
-
-
 
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
@@ -124,9 +84,6 @@ void AsciiMassenger::sendEnd()
 
 bool AsciiMassenger::_process(int streamByte)
 {
-
-	
-
   // Check if we've reached the end of the buffer.
   if (_messageSize >= (MASSENGER_BUFFERSIZE-1))
   {

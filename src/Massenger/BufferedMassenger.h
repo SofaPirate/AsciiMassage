@@ -22,7 +22,7 @@ public:
   {
 
     if ( _needToFlush) {
-      _needToFlush = false;
+      
       flush();
     }
     // Read stream.
@@ -41,6 +41,7 @@ public:
 
   /// Flushes current message in buffer (if any).
   virtual void flush() {
+  	_needToFlush = false;
     _messageSize = 0;
   }
 
