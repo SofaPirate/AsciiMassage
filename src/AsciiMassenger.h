@@ -1,10 +1,10 @@
 #ifndef AsciiMassenger_h
 #define AsciiMassenger_h
 
-#include "Massenger/Massenger.h"
+#include "Massenger/BufferedMassenger.h"
 
 /// Main AsciiMassenger class.
-class AsciiMassenger : public Massenger
+class AsciiMassenger : public BufferedMassenger
 {
 public:
   /// Constructor.
@@ -43,27 +43,9 @@ public:
   /// Ends the sending of a message.
   virtual void sendEnd();
 
-  /// Returns true if new message has arrived.
-  virtual bool receive();
-
-  /// If current message matches "address", calls function "callback" and returns true.
-  virtual bool dispatch(const char* address, callbackFunction callback);
-
 protected:
   /// Processes a single value read from the serial stream.
   virtual bool _process(int serialByte);
-
-    // Current size of message in buffer.
-  uint8_t _messageSize;
-
-  // Index in the buffer of next argument to read.
-  //uint8_t _nextIndex;
-
-  // Buffer that holds the data for current message.
-  char _buffer[MASSENGER_BUFFERSIZE];
-  
-  // Flag to indicate the need to flush
-  bool _needToFlush;
 
 private:
   // Moves nextIndex to the next token.
@@ -71,8 +53,6 @@ private:
 
   // Returns true iff it is still possible to call next*().
   bool _hasNext() const;
-
-  bool _write(uint8_t value);
 
   // Helper function to read next value.
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
