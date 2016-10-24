@@ -34,8 +34,6 @@ public:
    */
   virtual bool receive() = 0;
 
-  /// Flushes current message in buffer (if any).
-  virtual void flush() = 0;
 
   /// If current message matches "address", calls function "callback" and returns true.
   virtual bool dispatch(const char* address, callbackFunction callback) = 0;
