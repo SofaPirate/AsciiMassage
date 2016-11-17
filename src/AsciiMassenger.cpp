@@ -19,9 +19,9 @@ void AsciiMassenger::flush()
    _needToFlush = false;
 }
 
-int8_t AsciiMassenger::nextByte(bool* error) {
-  int8_t v;
-  _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
+uint8_t AsciiMassenger::nextByte(bool* error) {
+  uint8_t v;
+  _nextBlock(true, (uint8_t*)&v, sizeof(uint8_t), error);
 
   return v;
 }

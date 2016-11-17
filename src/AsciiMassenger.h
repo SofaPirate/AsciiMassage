@@ -14,7 +14,7 @@ public:
   virtual void flush();
 
   /// Reads next byte.
-  virtual int8_t nextByte(bool* error=0);
+  virtual uint8_t nextByte(bool* error=0);
 
   /// Reads next int.
   virtual int16_t nextInt(bool* error=0);
