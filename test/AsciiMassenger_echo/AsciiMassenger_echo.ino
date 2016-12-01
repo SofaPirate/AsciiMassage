@@ -18,7 +18,7 @@ void setup() {
 void loop() {
 
 
-  while ( msg.receive() ) { // Check if there is a new message
+  while ( msg.parsePacket() ) { // Check if there is a new message
     msg.dispatch("echo", echo ); // If "led" is received, run ledMsg
   }
  
@@ -35,12 +35,12 @@ void echo() {
   byte b = msg.nextByte();
 
 
-  msg.sendBegin("echo");
-  msg.sendInt(i);
-  msg.sendFloat(f);
-  msg.sendByte(b);
+  msg.beginPacket("echo");
+  msg.addInt(i);
+  msg.addFloat(f);
+  msg.addByte(b);
   
-  msg.sendEnd();
+  msg.endPacket();
   
 
 }

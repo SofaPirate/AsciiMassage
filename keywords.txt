@@ -7,6 +7,7 @@
 #######################################
 
 
+BinaryMassenger	KEYWORD1
 AsciiMassenger	KEYWORD1
 Massenger	KEYWORD1
 
@@ -14,22 +15,23 @@ Massenger	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-receive	KEYWORD2
-flush	KEYWORD2
+parsePacket	KEYWORD2
+match	KEYWORD2
 dispatch	KEYWORD2
+fullmatch	KEYWORD2
 nextByte	KEYWORD2
 nextInt	KEYWORD2
 nextLong	KEYWORD2
 nextFloat	KEYWORD2
 nextDouble	KEYWORD2
-sendBegin	KEYWORD2
-sendByte	KEYWORD2
-sendInt	KEYWORD2
-sendLong	KEYWORD2
-sendFloat	KEYWORD2
-sendDouble	KEYWORD2
-sendEnd	KEYWORD2
-send	KEYWORD2
+beginPacket	KEYWORD2
+addByte	KEYWORD2
+addInt	KEYWORD2
+addLong	KEYWORD2
+addFloat	KEYWORD2
+addDouble	KEYWORD2
+endPacket	KEYWORD2
+
 
 
 #######################################
