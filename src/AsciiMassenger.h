@@ -10,9 +10,6 @@ public:
   /// Constructor.
   AsciiMassenger(Stream* stream=&Serial);
 
-  /// Flushes current message in buffer (if any).
-  virtual void flush();
-
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0);
 
@@ -25,23 +22,23 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
 
-  /// Begins the sending of a message.
-  virtual void sendBegin(const char* address);
+   /// Begins the sending of a message.
+  virtual void beginPacket(const char* address);
 
-  /// Sends a byte.
-  virtual void sendByte(uint8_t value);
+  /// Adds a byte.
+  virtual void addByte(uint8_t value);
 
-  /// Sends an int.
-  virtual void sendInt(int16_t value);
+  /// Adds an int.
+  virtual void addInt(int16_t value);
 
-  /// Sends a long.
-  virtual void sendLong(int32_t value);
+  /// Adds a long.
+  virtual void addLong(int32_t value);
 
-  /// Sends a float.
-  virtual void sendFloat(float value);
+  /// Adds a float.
+  virtual void addFloat(float value);
 
   /// Ends the sending of a message.
-  virtual void sendEnd();
+  virtual void endPacket();
 
 protected:
   /// Processes a single value read from the serial stream.
@@ -57,8 +54,6 @@ private:
   // Helper function to read next value.
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
 
-  // Index in the buffer of next argument to read.
-  uint8_t _nextIndex;
 };
 
 

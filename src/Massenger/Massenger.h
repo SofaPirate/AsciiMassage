@@ -32,11 +32,15 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-  virtual bool receive() = 0;
+  virtual bool parsePacket() = 0;
 
 
   /// If current message matches "address", calls function "callback" and returns true.
   virtual bool dispatch(const char* address, callbackFunction callback) = 0;
+
+   /// Return true if current message matches "address"
+  virtual bool fullMatch(const char* address) = 0;
+
 
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0) = 0;
@@ -51,60 +55,60 @@ public:
   virtual float nextFloat(bool* error=0) = 0;
 
   /// Begins the sending of a message.
-  virtual void sendBegin(const char* address) = 0;
+  virtual void beginPacket(const char* address) = 0;
 
-  /// Sends a byte.
-  virtual void sendByte(uint8_t value) = 0;
+  /// Adds a byte.
+  virtual void addByte(uint8_t value) = 0;
 
-  /// Sends an int.
-  virtual void sendInt(int16_t value) = 0;
+  /// Adds an int.
+  virtual void addInt(int16_t value) = 0;
 
-  /// Sends a long.
-  virtual void sendLong(int32_t value) = 0;
+  /// Adds a long.
+  virtual void addLong(int32_t value) = 0;
 
-  /// Sends a float.
-  virtual void sendFloat(float value) = 0;
+  /// Adds a float.
+  virtual void addFloat(float value) = 0;
 
   /// Ends the sending of a message.
-  virtual void sendEnd() = 0;
+  virtual void endPacket() = 0;
 
   /// Sends message with no arguments.
   virtual void sendMessage(const char *address)
   {
-    sendBegin(address);
-    sendEnd();
+    beginPacket(address);
+    endPacket();
   }
 
   /// Sends message with single byte value.
   virtual void sendMessageByte(const char *address, uint8_t value)
   {
-    sendBegin(address);
-    sendByte(value);
-    sendEnd();
+    beginPacket(address);
+    addByte(value);
+    endPacket();
   }
 
   /// Sends message with single int value.
   virtual void sendMessageInt(const char *address, int16_t value)
   {
-    sendBegin(address);
-    sendInt(value);
-    sendEnd();
+    beginPacket(address);
+    addInt(value);
+    endPacket();
   }
 
   /// Sends message with single long value.
   virtual void sendMessageLong(const char *address, int32_t value)
   {
-    sendBegin(address);
-    sendLong(value);
-    sendEnd();
+    beginPacket(address);
+    addLong(value);
+    endPacket();
   }
 
   /// Sends message with single float value.
   virtual void sendMessageFloat(const char *address, float value)
   {
-    sendBegin(address);
-    sendFloat(value);
-    sendEnd();
+    beginPacket(address);
+    addFloat(value);
+    endPacket();
   }
 
 protected:

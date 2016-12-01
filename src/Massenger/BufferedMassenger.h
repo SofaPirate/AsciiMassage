@@ -18,7 +18,7 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-  virtual bool receive()
+  virtual bool parsePacket()
   {
 
     if ( _needToFlush) {
@@ -40,9 +40,10 @@ public:
   }
 
   /// Flushes current message in buffer (if any).
-  virtual void flush() {
+  void flush() {
   	_needToFlush = false;
     _messageSize = 0;
+    _nextIndex = 0;
   }
 
   virtual bool dispatch(const char* address, callbackFunction callback)
@@ -50,6 +51,13 @@ public:
     // Verity if address matches beginning of buffer.
     bool matches = (strcmp(_buffer, address) == 0);
     if (matches) callback();
+    return matches;
+  }
+
+    virtual bool fullMatch(const char* address)
+  {
+    // Verity if address matches beginning of buffer.
+    bool matches = (strcmp(_buffer, address) == 0);
     return matches;
   }
 
@@ -71,7 +79,7 @@ protected:
   uint8_t _messageSize;
 
   // Index in the buffer of next argument to read.
-  //uint8_t _nextIndex;
+  uint8_t _nextIndex;
 
   // Buffer that holds the data for current message.
   char _buffer[MASSENGER_BUFFERSIZE];

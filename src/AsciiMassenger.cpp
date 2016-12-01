@@ -12,12 +12,7 @@ AsciiMassenger::AsciiMassenger(Stream* stream)
   	flush();
   }
 
-void AsciiMassenger::flush()
-{
-  BufferedMassenger::flush();
-   _nextIndex = 0;
-   _needToFlush = false;
-}
+
 
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
@@ -50,34 +45,34 @@ float AsciiMassenger::nextFloat(bool* error)
   return v;
 }
 
-void AsciiMassenger::sendBegin(const char* address)
+void AsciiMassenger::beginPacket(const char* address)
 {
   _stream->print(address);
 }
 
-void AsciiMassenger::sendByte(uint8_t value)
+void AsciiMassenger::addByte(uint8_t value)
 {
-  sendLong(value);
+  addLong(value);
 }
 
-void AsciiMassenger::sendInt(int16_t value)
+void AsciiMassenger::addInt(int16_t value)
 {
-  sendLong(value);
+  addLong(value);
 }
 
-void AsciiMassenger::sendLong(int32_t value)
-{
-  _stream->write(' ');
-  _stream->print(value);
-}
-
-void AsciiMassenger::sendFloat(float value)
+void AsciiMassenger::addLong(int32_t value)
 {
   _stream->write(' ');
   _stream->print(value);
 }
 
-void AsciiMassenger::sendEnd()
+void AsciiMassenger::addFloat(float value)
+{
+  _stream->write(' ');
+  _stream->print(value);
+}
+
+void AsciiMassenger::endPacket()
 {
   _stream->write('\n');
 }
