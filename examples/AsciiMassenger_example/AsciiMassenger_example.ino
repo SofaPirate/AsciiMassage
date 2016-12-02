@@ -25,6 +25,9 @@ void setup() {
   // Attach a switch to digital pin  2 :
   pinMode(2, INPUT_PULLUP);
 
+  // Debug LED (Indicated by a 'L' on the board)  :
+  pinMode(13,OUTPUT);
+
   // Attach a potentiometer or light sensor to analog pin 0 :
   // Nothing to setup for the analog pin.
 }
