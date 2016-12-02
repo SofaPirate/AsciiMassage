@@ -3,6 +3,8 @@
 // Attach a LED to digital pin 6.
 // Attach a potentiometer or light sensor to analog pin 0.
 // Attach a switch to digital pin 2.
+// Circuit image : 
+// https://github.com/SofaPirate/AsciiMassenger/blob/master/examples/AsciiMassenger_example/AsciiMassenger_example_circuit.png
 
 #include <AsciiMassenger.h>
 AsciiMassenger msg; // By default, AsciiMassenger uses Serial.
