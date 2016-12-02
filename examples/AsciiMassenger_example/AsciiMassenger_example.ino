@@ -23,7 +23,7 @@ void setup() {
   pinMode(6, OUTPUT);
 
   // Attach a switch to digital pin  2 :
-  pinMode(2, INPUT);
+  pinMode(2, INPUT_PULLUP);
 
   // Attach a potentiometer or light sensor to analog pin 0 :
   // Nothing to setup for the analog pin.
