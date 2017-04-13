@@ -163,7 +163,7 @@ void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* 
     }
     else
     {
-      double val = strtod(&_buffer[_nextIndex], 0);
+      float  val = strtof(&_buffer[_nextIndex], 0);
       memcpy(value, &val, n);
     }
 
