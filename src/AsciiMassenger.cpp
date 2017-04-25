@@ -39,10 +39,10 @@ int32_t AsciiMassenger::nextLong(bool* error)
 
 float AsciiMassenger::nextFloat(bool* error)
 {
-  float v;
-  _nextBlock(false, (uint8_t*)&v, sizeof(float), error);
+  double v;
+  _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
 
-  return v;
+  return (float)v;
 }
 
 void AsciiMassenger::beginPacket(const char* address)
@@ -163,7 +163,7 @@ void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* 
     }
     else
     {
-      float  val = strtof(&_buffer[_nextIndex], 0);
+      double  val = strtod(&_buffer[_nextIndex], 0);
       memcpy(value, &val, n);
     }
 

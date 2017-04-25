@@ -1,6 +1,7 @@
 #ifndef AsciiMassenger_h
 #define AsciiMassenger_h
 
+
 #include "Massenger/BufferedMassenger.h"
 
 /// Main AsciiMassenger class.
