@@ -1,24 +1,24 @@
-#ifndef AsciiMassenger_h
-#define AsciiMassenger_h
+#ifndef AsciiMassage_h
+#define AsciiMassage_h
 
 
-#include "Massenger/BufferedMassenger.h"
+#include "Massage/BufferedMassage.h"
 #include "Print.h"
 
-/// Main AsciiMassenger class.
+/// Main AsciiMassage class.
 // Maybe Print should be private !!!
 // Print should be instantiated and not extended
-class AsciiMassenger : public BufferedMassenger, public Print
+class AsciiMassage : public BufferedMassage, public Print
 {
 public:
   /// Constructor.
-  AsciiMassenger();
+  AsciiMassage();
 
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0);
 
   /// Reads next int.
-  virtual int16_t nextInt(bool* error=0);
+  virtual int16_t nextInt(bool* error=0); 
 
   /// Reads next long.
   virtual int32_t nextLong(bool* error=0);
@@ -56,13 +56,13 @@ protected:
 
 private:
   // Moves nextIndex to the next token.
-  bool _updateNextIndexRx();
+  bool _updateNextIndex();
 
   // Returns true iff it is still possible to call next*().
-  bool _hasNextRx() const;
+  bool _hasNext() const;
 
   // Helper function to read next value.
-  void _nextBlockRx(bool isInteger, uint8_t* value, size_t n, bool* error);
+  void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
 
 
 };

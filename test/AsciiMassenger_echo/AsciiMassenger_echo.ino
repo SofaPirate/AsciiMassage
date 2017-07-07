@@ -1,8 +1,9 @@
-#include <AsciiMassenger.h>
+#include <AsciiMassage.h>
 
 
-// Instantiate a Massenger object,
-AsciiMassenger msg;
+// Instantiate Massage objects for receiving and sending massages
+AsciiMassage inbound;
+AsciiMassage outbound;
 
 void setup() {
 
@@ -18,7 +19,7 @@ void loop() {
 
   while ( Serial.available() ) {
     // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED 
-    msg.parse( Serial.read() , massageReceived );
+    inbound.parse( Serial.read() , massageReceived );
   }
 
 }
@@ -26,21 +27,24 @@ void loop() {
 // Process received massages.
 void massageReceived() {
 
-  if ( msg.fullMatch("echo")) {
-    int i = msg.nextInt(); // ...read the next element as an int...
-    float f = msg.nextFloat();
-    byte b = msg.nextByte();
+  if ( inbound.fullMatch("echo")) {
+    int i = inbound.nextInt(); // ...read the next element as an int...
+    float f = inbound.nextFloat();
+    byte b = inbound.nextByte();
 
-    msg.beginPacket("echo");
-    msg.addInt(i);
-    msg.addFloat(f);
-    msg.addByte(b);
-    msg.endPacket();
+    outbound.beginPacket("echo");
+    outbound.addInt(i);
+    outbound.addFloat(f);
+    outbound.addByte(b);
+    outbound.endPacket();
     
-    Serial.write(msg.buffer);
+    Serial.write(outbound.buffer);
     
   } else {
-    msg.beginPacket("echo");
-    Serial.write( msg.buffer , msg.size );
+    
+    outbound.beginPacket("what?");
+    outbound.endPacket();
+    Serial.write( outbound.buffer , outbound.size );
+    
   }
 }
