@@ -2,8 +2,7 @@
 
 
 // Instantiate a Massenger object,
-// link it to Serial
-AsciiMassenger msg;  // same as AsciiMassenger msg =  AsciiMassenger(&Serial);
+AsciiMassenger msg;
 
 void setup() {
 
@@ -17,30 +16,31 @@ void setup() {
 
 void loop() {
 
-
-  while ( msg.parsePacket() ) { // Check if there is a new message
-    msg.dispatch("echo", echo ); // If "led" is received, run ledMsg
+  while ( Serial.available() ) {
+    // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED 
+    msg.parse( Serial.read() , massageReceived );
   }
- 
-  delay(50);
-
 
 }
 
 // Process received massages.
-void echo() {
+void massageReceived() {
 
-  int i = msg.nextInt(); // ...read the next element as an int...
-  float f = msg.nextFloat();
-  byte b = msg.nextByte();
+  if ( msg.fullMatch("echo")) {
+    int i = msg.nextInt(); // ...read the next element as an int...
+    float f = msg.nextFloat();
+    byte b = msg.nextByte();
 
-
-  msg.beginPacket("echo");
-  msg.addInt(i);
-  msg.addFloat(f);
-  msg.addByte(b);
-  
-  msg.endPacket();
-  
-
+    msg.beginPacket("echo");
+    msg.addInt(i);
+    msg.addFloat(f);
+    msg.addByte(b);
+    msg.endPacket();
+    
+    Serial.write(msg.buffer);
+    
+  } else {
+    msg.beginPacket("echo");
+    Serial.write( msg.buffer , msg.size );
+  }
 }

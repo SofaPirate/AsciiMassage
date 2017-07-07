@@ -12,7 +12,7 @@
  * Max. size of message buffer. Can be predefined before including Massenger.h
  * to increase/decrease size.
  */
-#define MASSENGER_BUFFERSIZE 128
+#define MASSENGER_BUFFERSIZE 256
 #endif
 
 
@@ -23,7 +23,7 @@ public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  Massenger(Stream* stream) : _stream(stream) {}
+  Massenger() {}
 
   // Virtual destructor.
   virtual ~Massenger() {}
@@ -32,11 +32,11 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-  virtual bool parsePacket() = 0;
+  virtual void parse(int data,callbackFunction callback) = 0;
 
 
   /// If current message matches "address", calls function "callback" and returns true.
-  virtual bool dispatch(const char* address, callbackFunction callback) = 0;
+  //virtual bool dispatch(const char* address, callbackFunction callback) = 0;
 
    /// Return true if current message matches "address"
   virtual bool fullMatch(const char* address) = 0;
@@ -111,9 +111,6 @@ public:
     endPacket();
   }
 
-protected:
-  // Pointer to the stream read by this object.
-  Stream* _stream;
 };
 
 

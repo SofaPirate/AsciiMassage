@@ -7,16 +7,15 @@ extern "C" {
 
 #include "AsciiMassenger.h"
 
-AsciiMassenger::AsciiMassenger(Stream* stream)
-  : BufferedMassenger(stream) {
-  	flush();
+AsciiMassenger::AsciiMassenger() {
+    flushRx();
   }
 
 
 
 int8_t AsciiMassenger::nextByte(bool* error) {
   int8_t v;
-  _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
+  _nextBlockRx(true, (uint8_t*)&v, sizeof(int8_t), error);
 
   return v;
 }
@@ -24,7 +23,7 @@ int8_t AsciiMassenger::nextByte(bool* error) {
 int16_t AsciiMassenger::nextInt(bool* error)
 {
   int16_t v;
-  _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
+  _nextBlockRx(true, (uint8_t*)&v, sizeof(int16_t), error);
 
   return v;
 }
@@ -32,7 +31,7 @@ int16_t AsciiMassenger::nextInt(bool* error)
 int32_t AsciiMassenger::nextLong(bool* error)
 {
   int32_t v;
-  _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
+  _nextBlockRx(true, (uint8_t*)&v, sizeof(int32_t), error);
 
   return v;
 }
@@ -40,14 +39,15 @@ int32_t AsciiMassenger::nextLong(bool* error)
 float AsciiMassenger::nextFloat(bool* error)
 {
   double v;
-  _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
+  _nextBlockRx(false, (uint8_t*)&v, sizeof(double), error);
 
   return (float)v;
 }
 
 void AsciiMassenger::beginPacket(const char* address)
 {
-  _stream->print(address);
+  flushTx();
+  print(address);
 }
 
 void AsciiMassenger::addByte(uint8_t value)
@@ -62,32 +62,36 @@ void AsciiMassenger::addInt(int16_t value)
 
 void AsciiMassenger::addLong(int32_t value)
 {
-  _stream->write(' ');
-  _stream->print(value);
+  write(' ');
+  print(value);
+
+ //_stream->write(' ');
+ // _stream->print(value);
 }
 
 void AsciiMassenger::addFloat(float value)
 {
-  _stream->write(' ');
-  _stream->print(value);
+  write(' ');
+  print(value);
+  //_stream->write(' ');
+ // _stream->print(value);
 }
 
 void AsciiMassenger::endPacket()
 {
-  _stream->write('\n');
+  write('\n');
+  write(0);
+ // _stream->write('\n');
 }
 
-bool AsciiMassenger::_process(int streamByte)
+bool AsciiMassenger::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
-  if (_messageSize >= (MASSENGER_BUFFERSIZE-1))
+  if (_messageSizeRx >= (MASSENGER_BUFFERSIZE -1))
   {
-    _messageSize = MASSENGER_BUFFERSIZE-1;
-    _write(0);
-    flush();
-    #ifdef DEBUG_TOM
-       _stream->println("Too long");
-	#endif
+    _messageSizeRx = MASSENGER_BUFFERSIZE -1;
+    _storeRx(0);
+    flushRx();
     return false;
   }
 
@@ -96,56 +100,50 @@ bool AsciiMassenger::_process(int streamByte)
   {
     case '\n': // LF
     case '\r': // CR
-      if (_messageSize > 0) // only process this if we are *not* at beginning
+      if (_messageSizeRx > 0) // only process this if we are *not* at beginning
       {
-        if (_buffer[_messageSize-1] != 0)
-          _write(0);
+        if (rxBuffer[_messageSizeRx-1] != 0)
+          _storeRx(0);
 
         // Position _nextIndex after command address string.
-        _nextIndex = 0;
-        _updateNextIndex();
- #ifdef DEBUG_TOM
-       _stream->print("ok ");
-       _stream->println(_buffer);
-	#endif
+        _nextIndexRx = 0;
+        _updateNextIndexRx();
+
         return true;
       }
-         #ifdef DEBUG_TOM
-       _stream->println("bad");
-	#endif
-      flush();
+        
+      flushRx();
       break;
     case 0 :
     case ' ':
       // Put null character instead of space to easily use atoi()/atof() functions.
-      if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
+      if (_messageSizeRx > 0 && rxBuffer[_messageSizeRx-1] != 0)
       {
-        _write(0);
+        _storeRx(0);
       }
       break;
     default: // caught a non-reserved character
-      _write(streamByte);
+      _storeRx(streamByte);
   }
 
   return false;
 }
 
-bool AsciiMassenger::_updateNextIndex()
+bool AsciiMassenger::_updateNextIndexRx()
 {
-  while (_buffer[_nextIndex] != 0)
-    _nextIndex++;
-  _nextIndex++;
-  return (_nextIndex < _messageSize);
+  while (rxBuffer[_nextIndexRx] != 0) _nextIndexRx++;
+  _nextIndexRx++;
+  return (_nextIndexRx < _messageSizeRx);
 }
 
-bool AsciiMassenger::_hasNext() const {
-  return (_nextIndex < _messageSize);
+bool AsciiMassenger::_hasNextRx() const {
+  return (_nextIndexRx < _messageSizeRx);
 }
 
-void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
+void AsciiMassenger::_nextBlockRx(bool isInteger, uint8_t* value, size_t n, bool* error)
 {
   // Check for errors.
-  bool err = !_hasNext();
+  bool err = !_hasNextRx();
   if (err)
     memset(value, 0, n); // set to zero (default)
 
@@ -158,15 +156,23 @@ void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* 
     // Switch integer vs real.
     if (isInteger)
     {
-      long val = strtol(&_buffer[_nextIndex], 0, 10);
+      long val = strtol(&rxBuffer[_nextIndexRx], 0, 10);
       memcpy(value, &val, n);
     }
     else
     {
-      double  val = strtod(&_buffer[_nextIndex], 0);
+      double  val = strtod(&rxBuffer[_nextIndexRx], 0);
       memcpy(value, &val, n);
     }
 
-    _updateNextIndex();
+    _updateNextIndexRx();
   }
+
 }
+
+
+  size_t AsciiMassenger::write(uint8_t data) {
+        _storeTx(data);
+        return 0;
+    }
+

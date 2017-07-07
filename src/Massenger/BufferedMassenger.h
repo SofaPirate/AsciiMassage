@@ -7,8 +7,8 @@ class BufferedMassenger : public Massenger
 {
 public:
   /// Constructor.
-  BufferedMassenger(Stream* stream=&Serial) : Massenger(stream), _messageSize(0) {
-    _needToFlush = false;
+  BufferedMassenger()  {
+    flushRx();
   }
 
   // Virtual destructor.
@@ -18,38 +18,45 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-  virtual bool parsePacket()
+  virtual void parse(int data, callbackFunction callback)
   {
 
-    if ( _needToFlush) {
+    if ( _needToFlushRx) {
       
-      flush();
+      flushRx();
     }
     // Read stream.
-    while (_stream->available())
-    {
-      if (_process(_stream->read())) {
-        _needToFlush = true;
-        return true;
-      }
+    
 
-        
+    if ( _decode(data) ) {
+        _needToFlushRx = true;
+        callback();
+        //return true;
     }
-
-    return false;
+    
+    //return false;
   }
 
   /// Flushes current message in buffer (if any).
-  void flush() {
-  	_needToFlush = false;
-    _messageSize = 0;
-    _nextIndex = 0;
+  void flushRx() {
+    _needToFlushRx = false;
+    _messageSizeRx = 0;
+    _nextIndexRx = 0;
   }
+
+    /// Flushes current message in buffer (if any).
+  void flushTx() {
+
+    size = _messageSizeTx = 0;
+
+
+  }
+
 
   virtual bool dispatch(const char* address, callbackFunction callback)
   {
     // Verity if address matches beginning of buffer.
-    bool matches = (strcmp(_buffer, address) == 0);
+    bool matches = (strcmp(rxBuffer, address) == 0);
     if (matches) callback();
     return matches;
   }
@@ -57,34 +64,60 @@ public:
     virtual bool fullMatch(const char* address)
   {
     // Verity if address matches beginning of buffer.
-    bool matches = (strcmp(_buffer, address) == 0);
+    bool matches = (strcmp(rxBuffer, address) == 0);
     return matches;
   }
 
 protected:
-  /// Processes a single value read from the serial stream.
-  virtual bool _process(int serialByte) = 0;
+  /// Decode a single value read from the serial stream.
+  // True if an end is found.
+  virtual bool _decode(int serialByte) = 0;
 
   // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
-  bool _write(uint8_t value)
+  bool _storeRx(uint8_t value)
   {
-    if (_messageSize >= MASSENGER_BUFFERSIZE)
+    if (_messageSizeRx >= MASSENGER_BUFFERSIZE)
       return false;
-    _buffer[_messageSize++] = value;
+    rxBuffer[_messageSizeRx++] = value;
+    return true;
+  }
+/*
+    /// Processes a single value read from the serial stream.
+  virtual bool _processTx(int serialByte) = 0;
+  */
+  // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
+  bool _storeTx(uint8_t value)
+  {
+    
+   if (_messageSizeTx >= MASSENGER_BUFFERSIZE)
+      return false;
+    buffer[_messageSizeTx++] = value;
+    size = _messageSizeTx;
     return true;
   }
 
+
 protected:
   // Current size of message in buffer.
-  uint8_t _messageSize;
+  uint8_t _messageSizeRx;
 
   // Index in the buffer of next argument to read.
-  uint8_t _nextIndex;
+  uint8_t _nextIndexRx;
 
-  // Buffer that holds the data for current message.
-  char _buffer[MASSENGER_BUFFERSIZE];
+  bool _needToFlushRx;
 
-  bool _needToFlush;
+    // Current size of message in buffer.
+  uint8_t _messageSizeTx;
+
+        // Buffer that holds the data for current message.
+  char rxBuffer[MASSENGER_BUFFERSIZE];
+
+public:
+  
+  size_t size;
+
+  // Buffer that holds the data for current message to be sent.
+  char buffer[MASSENGER_BUFFERSIZE];
 };
 
 #endif
