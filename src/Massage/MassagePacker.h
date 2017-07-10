@@ -1,5 +1,5 @@
-#ifndef MassageEncoder_h
-#define MassageEncoder_h
+#ifndef MassagePacker_h
+#define MassagePacker_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
@@ -7,23 +7,23 @@
 #include "WProgram.h"
 #endif
 
-#ifndef MASSAGE_ENCODER_BUFFERSIZE
+#ifndef MASSAGE_PACKER_BUFFERSIZE
 /**
- * Max. size of message buffer. Can be predefined before including MassageEncoder.h
+ * Max. size of message buffer. Can be predefined before including MassagePacker.h
  * to increase/decrease size.
  */
-#define MASSAGE_ENCODER_BUFFERSIZE 256
+#define MASSAGE_PACKER_BUFFERSIZE 256
 #endif
 
 
-/// Main MassageEncoder abstract class.
-class MassageEncoder
+/// Main MassagePacker abstract class.
+class MassagePacker
 {
 public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  MassageEncoder() {
+  MassagePacker() {
     flush();
   }
 
@@ -35,7 +35,7 @@ public:
   }
 
   // Virtual destructor.
-  virtual ~MassageEncoder() {}
+  virtual ~MassagePacker() {}
 
   /// Begins the sending of a message.
   virtual void beginPacket(const char* address) = 0;
@@ -56,39 +56,39 @@ public:
   virtual void endPacket() = 0;
 
 
-  /// Sends message with no arguments.
-  virtual void sendEmpty(const char *address)
+  /// Create a packetwith no arguments.
+  virtual void packEmpty(const char *address)
   {
     beginPacket(address);
     endPacket();
   }
 
-  /// Sends message with single byte value.
-  virtual void sendOneByte(const char *address, uint8_t value)
+  /// Create a packetwith single byte value.
+  virtual void packOneByte(const char *address, uint8_t value)
   {
     beginPacket(address);
     addByte(value);
     endPacket();
   }
 
-  /// Sends message with single int value.
-  virtual void sendOneInt(const char *address, int16_t value)
+  /// Create a packet with single int value.
+  virtual void packOneInt(const char *address, int16_t value)
   {
     beginPacket(address);
     addInt(value);
     endPacket();
   }
 
-  /// Sends message with single long value.
-  virtual void sendOneLong(const char *address, int32_t value)
+  /// Create a packet with single long value.
+  virtual void packOneLong(const char *address, int32_t value)
   {
     beginPacket(address);
     addLong(value);
     endPacket();
   }
 
-  /// Sends message with single float value.
-  virtual void sendOneFloat(const char *address, float value)
+  /// Create a packet with single float value.
+  virtual void packOneFloat(const char *address, float value)
   {
     beginPacket(address);
     addFloat(value);
@@ -99,7 +99,7 @@ public:
     return _messageSize;
   }
 
-char* buffer  () { 
+const char* buffer  () const { 
   return _buffer; 
 }
 
@@ -108,7 +108,7 @@ char* buffer  () {
     bool _store(uint8_t value)
     {
       
-     if (_messageSize >= MASSAGE_ENCODER_BUFFERSIZE)
+     if (_messageSize >= MASSAGE_PACKER_BUFFERSIZE)
         return false;
       _buffer[_messageSize++] = value;
       
@@ -125,7 +125,7 @@ char* buffer  () {
 
 
   // Buffer that holds the data for current message to be sent.
-  char _buffer[MASSAGE_ENCODER_BUFFERSIZE];
+  char _buffer[MASSAGE_PACKER_BUFFERSIZE];
 
 
 };

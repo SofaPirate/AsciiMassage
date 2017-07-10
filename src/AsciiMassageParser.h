@@ -1,16 +1,16 @@
-#ifndef AsciiMassageDecoder_h
-#define AsciiMassageDecoder_h
+#ifndef AsciiMassageParser_h
+#define AsciiMassageParser_h
 
 
-#include "Massage/MassageDecoder.h"
+#include "Massage/MassageParser.h"
 
 
-/// Main AsciiMassageDecoder class.
-class AsciiMassageDecoder : public MassageDecoder
+/// Main AsciiMassageParser class.
+class AsciiMassageParser : public MassageParser
 {
 public:
   /// Constructor.
-  AsciiMassageDecoder();
+  AsciiMassageParser();
 
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0);

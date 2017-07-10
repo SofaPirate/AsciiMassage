@@ -1,5 +1,5 @@
-#ifndef MassageDecoder_h
-#define MassageDecoder_h
+#ifndef MassageParser_h
+#define MassageParser_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
@@ -7,28 +7,28 @@
 #include "WProgram.h"
 #endif
 
-#ifndef MASSAGE_DECODER_BUFFERSIZE
+#ifndef MASSAGE_PARSER_BUFFERSIZE
 /**
- * Max. size of message buffer. Can be predefined before including MassageDecoder.h
+ * Max. size of message buffer. Can be predefined before including MassageParser.h
  * to increase/decrease size.
  */
-#define MASSAGE_DECODER_BUFFERSIZE 256
+#define MASSAGE_PARSER_BUFFERSIZE 256
 #endif
 
 
-/// Main MassageDecoder abstract class.
-class MassageDecoder
+/// Main MassageParser abstract class.
+class MassageParser
 {
 public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  MassageDecoder( ) {  
+  MassageParser( ) {  
     flush(); 
   }
 
   // Virtual destructor.
-  virtual ~MassageDecoder() {}
+  virtual ~MassageParser() {}
 
   /**
    * Flushes previous message and reads serial port. Returns true if new
@@ -98,7 +98,7 @@ public:
     bool _store(uint8_t value)
     {
       
-     if (_messageSize >= MASSAGE_DECODER_BUFFERSIZE) return false;
+     if (_messageSize >= MASSAGE_PARSER_BUFFERSIZE) return false;
 
       _buffer[_messageSize++] = value;
       
@@ -114,7 +114,7 @@ public:
   bool _needToFlush;
 
   // Buffer that holds the data for current message to be sent.
-  char _buffer[MASSAGE_DECODER_BUFFERSIZE];
+  char _buffer[MASSAGE_PARSER_BUFFERSIZE];
 
 };
 

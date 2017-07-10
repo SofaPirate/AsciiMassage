@@ -5,22 +5,22 @@ extern "C" {
   #include <stdlib.h>
 }
 
-#include "AsciiMassageDecoder.h"
+#include "AsciiMassageParser.h"
 
-AsciiMassageDecoder::AsciiMassageDecoder() {
+AsciiMassageParser::AsciiMassageParser() {
     flush();
   }
 
 
 
-int8_t AsciiMassageDecoder::nextByte(bool* error) {
+int8_t AsciiMassageParser::nextByte(bool* error) {
   int8_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
 
   return v;
 }
 
-int16_t AsciiMassageDecoder::nextInt(bool* error)
+int16_t AsciiMassageParser::nextInt(bool* error)
 {
   int16_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
@@ -28,7 +28,7 @@ int16_t AsciiMassageDecoder::nextInt(bool* error)
   return v;
 }
 
-int32_t AsciiMassageDecoder::nextLong(bool* error)
+int32_t AsciiMassageParser::nextLong(bool* error)
 {
   int32_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
@@ -36,7 +36,7 @@ int32_t AsciiMassageDecoder::nextLong(bool* error)
   return v;
 }
 
-float AsciiMassageDecoder::nextFloat(bool* error)
+float AsciiMassageParser::nextFloat(bool* error)
 {
   double v;
   _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
@@ -44,12 +44,12 @@ float AsciiMassageDecoder::nextFloat(bool* error)
   return (float)v;
 }
 
-bool AsciiMassageDecoder::_decode(int streamByte)
+bool AsciiMassageParser::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
-  if (_messageSize >= (MASSAGE_DECODER_BUFFERSIZE -1))
+  if (_messageSize >= (MASSAGE_PARSER_BUFFERSIZE -1))
   {
-    _messageSize = MASSAGE_DECODER_BUFFERSIZE -1;
+    _messageSize = MASSAGE_PARSER_BUFFERSIZE -1;
     _store(0);
     flush();
     return false;
@@ -89,18 +89,18 @@ bool AsciiMassageDecoder::_decode(int streamByte)
   return false;
 }
 
-bool AsciiMassageDecoder::_updateNextIndex()
+bool AsciiMassageParser::_updateNextIndex()
 {
   while (_buffer[_nextIndex] != 0) _nextIndex++;
   _nextIndex++;
   return (_nextIndex < _messageSize);
 }
 
-bool AsciiMassageDecoder::_hasNext() const {
+bool AsciiMassageParser::_hasNext() const {
   return (_nextIndex < _messageSize);
 }
 
-void AsciiMassageDecoder::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
+void AsciiMassageParser::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
 {
   // Check for errors.
   bool err = !_hasNext();
@@ -130,10 +130,3 @@ void AsciiMassageDecoder::_nextBlock(bool isInteger, uint8_t* value, size_t n, b
 
 }
 
-/*
-  size_t AsciiMassageDecoder::write(uint8_t data) {
-        _store(data);
-        return 0;
-    }
-
-*/
