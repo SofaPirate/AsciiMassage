@@ -5,23 +5,22 @@ extern "C" {
   #include <stdlib.h>
 }
 
-#include "AsciiMassenger.h"
+#include "AsciiMassageParser.h"
 
-AsciiMassenger::AsciiMassenger(Stream* stream)
-  : BufferedMassenger(stream) {
-  	flush();
+AsciiMassageParser::AsciiMassageParser() {
+    flush();
   }
 
 
 
-int8_t AsciiMassenger::nextByte(bool* error) {
+int8_t AsciiMassageParser::nextByte(bool* error) {
   int8_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
 
   return v;
 }
 
-int16_t AsciiMassenger::nextInt(bool* error)
+int16_t AsciiMassageParser::nextInt(bool* error)
 {
   int16_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
@@ -29,7 +28,7 @@ int16_t AsciiMassenger::nextInt(bool* error)
   return v;
 }
 
-int32_t AsciiMassenger::nextLong(bool* error)
+int32_t AsciiMassageParser::nextLong(bool* error)
 {
   int32_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
@@ -37,7 +36,7 @@ int32_t AsciiMassenger::nextLong(bool* error)
   return v;
 }
 
-float AsciiMassenger::nextFloat(bool* error)
+float AsciiMassageParser::nextFloat(bool* error)
 {
   double v;
   _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
@@ -45,49 +44,14 @@ float AsciiMassenger::nextFloat(bool* error)
   return (float)v;
 }
 
-void AsciiMassenger::beginPacket(const char* address)
-{
-  _stream->print(address);
-}
-
-void AsciiMassenger::addByte(uint8_t value)
-{
-  addLong(value);
-}
-
-void AsciiMassenger::addInt(int16_t value)
-{
-  addLong(value);
-}
-
-void AsciiMassenger::addLong(int32_t value)
-{
-  _stream->write(' ');
-  _stream->print(value);
-}
-
-void AsciiMassenger::addFloat(float value)
-{
-  _stream->write(' ');
-  _stream->print(value);
-}
-
-void AsciiMassenger::endPacket()
-{
-  _stream->write('\n');
-}
-
-bool AsciiMassenger::_process(int streamByte)
+bool AsciiMassageParser::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
-  if (_messageSize >= (MASSENGER_BUFFERSIZE-1))
+  if (_messageSize >= (MASSAGE_PARSER_BUFFERSIZE -1))
   {
-    _messageSize = MASSENGER_BUFFERSIZE-1;
-    _write(0);
+    _messageSize = MASSAGE_PARSER_BUFFERSIZE -1;
+    _store(0);
     flush();
-    #ifdef DEBUG_TOM
-       _stream->println("Too long");
-	#endif
     return false;
   }
 
@@ -99,20 +63,15 @@ bool AsciiMassenger::_process(int streamByte)
       if (_messageSize > 0) // only process this if we are *not* at beginning
       {
         if (_buffer[_messageSize-1] != 0)
-          _write(0);
+          _store(0);
 
         // Position _nextIndex after command address string.
         _nextIndex = 0;
         _updateNextIndex();
- #ifdef DEBUG_TOM
-       _stream->print("ok ");
-       _stream->println(_buffer);
-	#endif
+
         return true;
       }
-         #ifdef DEBUG_TOM
-       _stream->println("bad");
-	#endif
+        
       flush();
       break;
     case 0 :
@@ -120,29 +79,28 @@ bool AsciiMassenger::_process(int streamByte)
       // Put null character instead of space to easily use atoi()/atof() functions.
       if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
       {
-        _write(0);
+        _store(0);
       }
       break;
     default: // caught a non-reserved character
-      _write(streamByte);
+      _store(streamByte);
   }
 
   return false;
 }
 
-bool AsciiMassenger::_updateNextIndex()
+bool AsciiMassageParser::_updateNextIndex()
 {
-  while (_buffer[_nextIndex] != 0)
-    _nextIndex++;
+  while (_buffer[_nextIndex] != 0) _nextIndex++;
   _nextIndex++;
   return (_nextIndex < _messageSize);
 }
 
-bool AsciiMassenger::_hasNext() const {
+bool AsciiMassageParser::_hasNext() const {
   return (_nextIndex < _messageSize);
 }
 
-void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
+void AsciiMassageParser::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
 {
   // Check for errors.
   bool err = !_hasNext();
@@ -169,4 +127,6 @@ void AsciiMassenger::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* 
 
     _updateNextIndex();
   }
+
 }
+
