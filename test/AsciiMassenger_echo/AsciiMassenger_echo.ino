@@ -1,10 +1,13 @@
-#include <AsciiMassageDecoder.h>
-#include <AsciiMassageEncoder.h>
+#include <AsciiMassagePacker.h>
+#include <AsciiMassageParser.h>
 
 
 // Instantiate Massage objects for encoding and decoding massages
-AsciiMassageDecoder decoder;
-AsciiMassageEncoder encoder;
+AsciiMassageParser inbound;
+AsciiMassagePacker outbound;
+
+bool sendMillis = false;
+unsigned long lastTimeSentMillis;
 
 void setup() {
 
@@ -20,7 +23,17 @@ void loop() {
 
   while ( Serial.available() ) {
     // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED 
-    decoder.parse( Serial.read() , massageReceived );
+    inbound.parse( Serial.read() , massageReceived );
+  }
+
+  if ( sendMillis && lastTimeSentMillis - millis() >= 100) {
+
+    outbound.beginPacket("ms");
+    outbound.addLong(millis());
+    outbound.endPacket();
+    
+    Serial.write(outbound.buffer());
+    
   }
 
 }
@@ -28,23 +41,27 @@ void loop() {
 // Process received massages.
 void massageReceived() {
 
-  if ( decoder.fullMatch("echo")) {
-    int i = decoder.nextInt(); // ...read the next element as an int...
-    float f = decoder.nextFloat();
-    byte b = decoder.nextByte();
+  if ( inbound.fullMatch("echo")) {
+    int i = inbound.nextInt(); // ...read the next element as an int...
+    float f = inbound.nextFloat();
+    byte b = inbound.nextByte();
 
-    encoder.beginPacket("echo");
-    encoder.addInt(i);
-    encoder.addFloat(f);
-    encoder.addByte(b);
-    encoder.endPacket();
+    outbound.beginPacket("echo");
+    outbound.addInt(i);
+    outbound.addFloat(f);
+    outbound.addByte(b);
+    outbound.endPacket();
     
-    Serial.write(encoder.buffer);
+    Serial.write(outbound.buffer());
+    
+  } else if ( inbound.fullMatch("ms") ) {
+    
+    sendMillis = inbound.nextInt();
     
   } else {
     
-    encoder.sendEmpty("what?");
-    Serial.write( encoder.buffer , encoder.size );
+    outbound.packEmpty("what?");
+    Serial.write( outbound.buffer() , outbound.size() );
     
   }
 }
