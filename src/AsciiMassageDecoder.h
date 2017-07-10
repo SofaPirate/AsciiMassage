@@ -1,18 +1,18 @@
-#ifndef AsciiMassage_h
-#define AsciiMassage_h
+#ifndef AsciiMassageDecoder_h
+#define AsciiMassageDecoder_h
 
 
-#include "Massage/BufferedMassage.h"
-#include "Print.h"
+#include "Massage/BufferedMassageDecoder.h"
+//#include "Print.h"
 
-/// Main AsciiMassage class.
+/// Main AsciiMassageDecoder class.
 // Maybe Print should be private !!!
 // Print should be instantiated and not extended
-class AsciiMassage : public BufferedMassage, public Print
+class AsciiMassageDecoder : public BufferedMassageDecoder
 {
 public:
   /// Constructor.
-  AsciiMassage();
+  AsciiMassageDecoder();
 
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0);
@@ -25,7 +25,7 @@ public:
 
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
-
+/*
    /// Begins the sending of a message.
   virtual void beginPacket(const char* address);
 
@@ -46,6 +46,7 @@ public:
 
   // REQUIRED BY PRINT, BUT SHOULD NEVER BE USED !!!
   virtual size_t write(uint8_t) ;
+  */
 
 protected:
   /// Decode a single value read from the serial stream.

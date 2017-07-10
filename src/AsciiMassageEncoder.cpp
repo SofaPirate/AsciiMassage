@@ -5,22 +5,22 @@ extern "C" {
   #include <stdlib.h>
 }
 
-#include "AsciiMassage.h"
+#include "AsciiMassageEncoder.h"
 
-AsciiMassage::AsciiMassage() {
+AsciiMassageEncoder::AsciiMassageEncoder() {
     flush();
   }
 
 
-
-int8_t AsciiMassage::nextByte(bool* error) {
+/*
+int8_t AsciiMassageEncoder::nextByte(bool* error) {
   int8_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int8_t), error);
 
   return v;
 }
 
-int16_t AsciiMassage::nextInt(bool* error)
+int16_t AsciiMassageEncoder::nextInt(bool* error)
 {
   int16_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int16_t), error);
@@ -28,7 +28,7 @@ int16_t AsciiMassage::nextInt(bool* error)
   return v;
 }
 
-int32_t AsciiMassage::nextLong(bool* error)
+int32_t AsciiMassageEncoder::nextLong(bool* error)
 {
   int32_t v;
   _nextBlock(true, (uint8_t*)&v, sizeof(int32_t), error);
@@ -36,31 +36,31 @@ int32_t AsciiMassage::nextLong(bool* error)
   return v;
 }
 
-float AsciiMassage::nextFloat(bool* error)
+float AsciiMassageEncoder::nextFloat(bool* error)
 {
   double v;
   _nextBlock(false, (uint8_t*)&v, sizeof(double), error);
 
   return (float)v;
 }
-
-void AsciiMassage::beginPacket(const char* address)
+*/
+void AsciiMassageEncoder::beginPacket(const char* address)
 {
   flush();
   print(address);
 }
 
-void AsciiMassage::addByte(uint8_t value)
+void AsciiMassageEncoder::addByte(uint8_t value)
 {
   addLong(value);
 }
 
-void AsciiMassage::addInt(int16_t value)
+void AsciiMassageEncoder::addInt(int16_t value)
 {
   addLong(value);
 }
 
-void AsciiMassage::addLong(int32_t value)
+void AsciiMassageEncoder::addLong(int32_t value)
 {
   write(' ');
   print(value);
@@ -69,7 +69,7 @@ void AsciiMassage::addLong(int32_t value)
  // _stream->print(value);
 }
 
-void AsciiMassage::addFloat(float value)
+void AsciiMassageEncoder::addFloat(float value)
 {
   write(' ');
   print(value);
@@ -77,14 +77,14 @@ void AsciiMassage::addFloat(float value)
  // _stream->print(value);
 }
 
-void AsciiMassage::endPacket()
+void AsciiMassageEncoder::endPacket()
 {
   write('\n');
   write(0);
  // _stream->write('\n');
 }
-
-bool AsciiMassage::_decode(int streamByte)
+/*
+bool AsciiMassageEncoder::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
   if (_messageSize >= (MASSAGE_BUFFERSIZE -1))
@@ -129,18 +129,18 @@ bool AsciiMassage::_decode(int streamByte)
   return false;
 }
 
-bool AsciiMassage::_updateNextIndex()
+bool AsciiMassageEncoder::_updateNextIndex()
 {
   while (buffer[_nextIndex] != 0) _nextIndex++;
   _nextIndex++;
   return (_nextIndex < _messageSize);
 }
 
-bool AsciiMassage::_hasNext() const {
+bool AsciiMassageEncoder::_hasNext() const {
   return (_nextIndex < _messageSize);
 }
 
-void AsciiMassage::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
+void AsciiMassageEncoder::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error)
 {
   // Check for errors.
   bool err = !_hasNext();
@@ -169,9 +169,9 @@ void AsciiMassage::_nextBlock(bool isInteger, uint8_t* value, size_t n, bool* er
   }
 
 }
+*/
 
-
-  size_t AsciiMassage::write(uint8_t data) {
+  size_t AsciiMassageEncoder::write(uint8_t data) {
         _store(data);
         return 0;
     }

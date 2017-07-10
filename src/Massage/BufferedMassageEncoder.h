@@ -1,22 +1,23 @@
-#ifndef BufferedMassage_h
-#define BufferedMassage_h
+#ifndef BufferedMassageEncoder_h
+#define BufferedMassageEncoder_h
 
-#include "Massage.h"
+#include "MassageEncoder.h"
 
-class BufferedMassage : public Massage {
+class BufferedMassageEncoder : public MassageEncoder {
 public:
   /// Constructor.
-  BufferedMassage()  {
+  BufferedMassageEncoder()  {
     flush();
   }
 
   // Virtual destructor.
-  virtual ~BufferedMassage() {}
+  virtual ~BufferedMassageEncoder() {}
 
   /**
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
+  /*
   virtual void parse(int data, callbackFunction callback)
   {
 
@@ -35,6 +36,7 @@ public:
     
     //return false;
   }
+  */
 
   /// Flushes current message in buffer (if any).
   void flush() {
@@ -45,18 +47,19 @@ public:
 
 
 
-
+/*
     virtual bool fullMatch(const char* address)
   {
     // Verity if address matches beginning of buffer.
     bool matches = (strcmp(buffer, address) == 0);
     return matches;
   }
+*/
 
 protected:
   /// Decode a single value read from the serial stream.
   // True if an end is found.
-  virtual bool _decode(int serialByte) = 0;
+  //virtual bool _decode(int serialByte) = 0;
 
   
 /*
@@ -67,7 +70,7 @@ protected:
   bool _store(uint8_t value)
   {
     
-   if (_messageSize >= MASSAGE_BUFFERSIZE)
+   if (_messageSize >= MASSAGE_ENCODER_BUFFERSIZE)
       return false;
     buffer[_messageSize++] = value;
     size = _messageSize;
@@ -92,7 +95,7 @@ public:
   size_t size;
 
   // Buffer that holds the data for current message to be sent.
-  char buffer[MASSAGE_BUFFERSIZE];
+  char buffer[MASSAGE_ENCODER_BUFFERSIZE];
 };
 
 #endif
