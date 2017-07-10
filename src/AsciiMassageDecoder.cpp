@@ -43,47 +43,7 @@ float AsciiMassageDecoder::nextFloat(bool* error)
 
   return (float)v;
 }
-/*
-void AsciiMassageDecoder::beginPacket(const char* address)
-{
-  flush();
-  print(address);
-}
 
-void AsciiMassageDecoder::addByte(uint8_t value)
-{
-  addLong(value);
-}
-
-void AsciiMassageDecoder::addInt(int16_t value)
-{
-  addLong(value);
-}
-
-void AsciiMassageDecoder::addLong(int32_t value)
-{
-  write(' ');
-  print(value);
-
- //_stream->write(' ');
- // _stream->print(value);
-}
-
-void AsciiMassageDecoder::addFloat(float value)
-{
-  write(' ');
-  print(value);
-  //_stream->write(' ');
- // _stream->print(value);
-}
-
-void AsciiMassageDecoder::endPacket()
-{
-  write('\n');
-  write(0);
- // _stream->write('\n');
-}
-*/
 bool AsciiMassageDecoder::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
@@ -102,7 +62,7 @@ bool AsciiMassageDecoder::_decode(int streamByte)
     case '\r': // CR
       if (_messageSize > 0) // only process this if we are *not* at beginning
       {
-        if (buffer[_messageSize-1] != 0)
+        if (_buffer[_messageSize-1] != 0)
           _store(0);
 
         // Position _nextIndex after command address string.
@@ -117,7 +77,7 @@ bool AsciiMassageDecoder::_decode(int streamByte)
     case 0 :
     case ' ':
       // Put null character instead of space to easily use atoi()/atof() functions.
-      if (_messageSize > 0 && buffer[_messageSize-1] != 0)
+      if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
       {
         _store(0);
       }
@@ -131,7 +91,7 @@ bool AsciiMassageDecoder::_decode(int streamByte)
 
 bool AsciiMassageDecoder::_updateNextIndex()
 {
-  while (buffer[_nextIndex] != 0) _nextIndex++;
+  while (_buffer[_nextIndex] != 0) _nextIndex++;
   _nextIndex++;
   return (_nextIndex < _messageSize);
 }
@@ -156,12 +116,12 @@ void AsciiMassageDecoder::_nextBlock(bool isInteger, uint8_t* value, size_t n, b
     // Switch integer vs real.
     if (isInteger)
     {
-      long val = strtol(&buffer[_nextIndex], 0, 10);
+      long val = strtol(&_buffer[_nextIndex], 0, 10);
       memcpy(value, &val, n);
     }
     else
     {
-      double  val = strtod(&buffer[_nextIndex], 0);
+      double  val = strtod(&_buffer[_nextIndex], 0);
       memcpy(value, &val, n);
     }
 

@@ -2,13 +2,11 @@
 #define AsciiMassageDecoder_h
 
 
-#include "Massage/BufferedMassageDecoder.h"
-//#include "Print.h"
+#include "Massage/MassageDecoder.h"
+
 
 /// Main AsciiMassageDecoder class.
-// Maybe Print should be private !!!
-// Print should be instantiated and not extended
-class AsciiMassageDecoder : public BufferedMassageDecoder
+class AsciiMassageDecoder : public MassageDecoder
 {
 public:
   /// Constructor.
@@ -25,28 +23,6 @@ public:
 
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
-/*
-   /// Begins the sending of a message.
-  virtual void beginPacket(const char* address);
-
-  /// Adds a byte.
-  virtual void addByte(uint8_t value);
-
-  /// Adds an int.
-  virtual void addInt(int16_t value);
-
-  /// Adds a long.
-  virtual void addLong(int32_t value);
-
-  /// Adds a float.
-  virtual void addFloat(float value);
-
-  /// Ends the sending of a message.
-  virtual void endPacket();
-
-  // REQUIRED BY PRINT, BUT SHOULD NEVER BE USED !!!
-  virtual size_t write(uint8_t) ;
-  */
 
 protected:
   /// Decode a single value read from the serial stream.

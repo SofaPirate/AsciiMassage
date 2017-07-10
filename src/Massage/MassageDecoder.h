@@ -23,7 +23,9 @@ public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  MassageDecoder() {}
+  MassageDecoder( ) {  
+    flush(); 
+  }
 
   // Virtual destructor.
   virtual ~MassageDecoder() {}
@@ -32,15 +34,43 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-  virtual void parse(int data,callbackFunction callback) = 0;
+   void parse(int data, callbackFunction callback)
+  {
+
+    if ( _needToFlush) {
+      
+      flush();
+    }
+    // Read stream.
+    
+
+    if ( _decode(data) ) {
+        _needToFlush = true;
+        
+        callback();
+        
+    }
+    
+  }
+
+    /// Flushes current message in buffer (if any).
+  void flush() {
+    _needToFlush = false;
+    _messageSize = 0;
+    _nextIndex = 0;
+  }
 
 
   /// If current message matches "address", calls function "callback" and returns true.
   //virtual bool dispatch(const char* address, callbackFunction callback) = 0;
 
    /// Return true if current message matches "address"
-  virtual bool fullMatch(const char* address) = 0;
-
+  bool fullMatch(const char* address)
+  {
+    // Verity if address matches beginning of buffer.
+    bool matches = (strcmp(_buffer, address) == 0);
+    return matches;
+  }
 
   /// Reads next byte.
   virtual int8_t nextByte(bool* error=0) = 0;
@@ -54,66 +84,41 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0) = 0;
 
-/*
-  /// Begins the sending of a message.
-  virtual void beginPacket(const char* address) = 0;
+  protected:
+    /// Decode a single value read from the serial stream.
+    // True if an end is found.
+    virtual bool _decode(int serialByte) = 0;
 
-  /// Adds a byte.
-  virtual void addByte(uint8_t value) = 0;
+    
+  /*
+      /// Processes a single value read from the serial stream.
+    virtual bool _processTx(int serialByte) = 0;
+    */
+    // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
+    bool _store(uint8_t value)
+    {
+      
+     if (_messageSize >= MASSAGE_DECODER_BUFFERSIZE)
+        return false;
+      _buffer[_messageSize++] = value;
+      
+      return true;
+    }
 
-  /// Adds an int.
-  virtual void addInt(int16_t value) = 0;
+      // Current size of message in buffer.
+  uint8_t _messageSize;
 
-  /// Adds a long.
-  virtual void addLong(int32_t value) = 0;
+  // Index in the buffer of next argument to read.
+  uint8_t _nextIndex;
 
-  /// Adds a float.
-  virtual void addFloat(float value) = 0;
+  bool _needToFlush;
 
-  /// Ends the sending of a message.
-  virtual void endPacket() = 0;
-
-  /// Sends message with no arguments.
-  virtual void sendMassage(const char *address)
-  {
-    beginPacket(address);
-    endPacket();
-  }
-
-  /// Sends message with single byte value.
-  virtual void sendMassageByte(const char *address, uint8_t value)
-  {
-    beginPacket(address);
-    addByte(value);
-    endPacket();
-  }
-
-  /// Sends message with single int value.
-  virtual void sendMassageInt(const char *address, int16_t value)
-  {
-    beginPacket(address);
-    addInt(value);
-    endPacket();
-  }
-
-  /// Sends message with single long value.
-  virtual void sendMassageLong(const char *address, int32_t value)
-  {
-    beginPacket(address);
-    addLong(value);
-    endPacket();
-  }
-
-  /// Sends message with single float value.
-  virtual void sendMassageFloat(const char *address, float value)
-  {
-    beginPacket(address);
-    addFloat(value);
-    endPacket();
-  }
-  */
+  // Buffer that holds the data for current message to be sent.
+  char _buffer[MASSAGE_DECODER_BUFFERSIZE];
 
 };
+
+
 
 
 
