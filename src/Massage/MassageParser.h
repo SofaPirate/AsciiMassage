@@ -106,7 +106,7 @@ public:
     }
 
       // Current size of message in buffer.
-  uint8_t _messageSize;
+  size_t _messageSize;
 
   // Index in the buffer of next argument to read.
   uint8_t _nextIndex;
