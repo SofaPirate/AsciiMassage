@@ -2,13 +2,13 @@
 #define AsciiMassageEncoder_h
 
 
-#include "Massage/BufferedMassageEncoder.h"
+#include "Massage/MassageEncoder.h"
 #include "Print.h"
 
 /// Main AsciiMassageEncoder class.
 // Maybe Print should be private !!!
 // Print should be instantiated and not extended
-class AsciiMassageEncoder : public BufferedMassageEncoder, public Print
+class AsciiMassageEncoder : public MassageEncoder, public Print
 {
 public:
   /// Constructor.

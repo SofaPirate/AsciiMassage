@@ -98,8 +98,8 @@ public:
     bool _store(uint8_t value)
     {
       
-     if (_messageSize >= MASSAGE_DECODER_BUFFERSIZE)
-        return false;
+     if (_messageSize >= MASSAGE_DECODER_BUFFERSIZE) return false;
+
       _buffer[_messageSize++] = value;
       
       return true;

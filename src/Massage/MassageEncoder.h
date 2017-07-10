@@ -23,37 +23,20 @@ public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  MassageEncoder() {}
+  MassageEncoder() {
+    flush();
+  }
+
+    /// Flushes current message in buffer (if any).
+  void flush() {
+    _needToFlush = false;
+    _messageSize = 0;
+    _nextIndex = 0;
+  }
 
   // Virtual destructor.
   virtual ~MassageEncoder() {}
 
-  /**
-   * Flushes previous message and reads serial port. Returns true if new
-   * message has arrived.
-   */
-  /*virtual void parse(int data,callbackFunction callback) = 0;
-
-
-  /// If current message matches "address", calls function "callback" and returns true.
-  //virtual bool dispatch(const char* address, callbackFunction callback) = 0;
-
-   /// Return true if current message matches "address"
-  virtual bool fullMatch(const char* address) = 0;
-
-
-  /// Reads next byte.
-  virtual int8_t nextByte(bool* error=0) = 0;
-
-  /// Reads next int.
-  virtual int16_t nextInt(bool* error=0) = 0;
-
-  /// Reads next long.
-  virtual int32_t nextLong(bool* error=0) = 0;
-
-  /// Reads next float.
-  virtual float nextFloat(bool* error=0) = 0;
-*/
   /// Begins the sending of a message.
   virtual void beginPacket(const char* address) = 0;
 
@@ -111,7 +94,39 @@ public:
     addFloat(value);
     endPacket();
   }
-  
+
+  size_t size() {
+    return _messageSize;
+  }
+
+char* buffer  () { 
+  return _buffer; 
+}
+
+  protected:
+     // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
+    bool _store(uint8_t value)
+    {
+      
+     if (_messageSize >= MASSAGE_ENCODER_BUFFERSIZE)
+        return false;
+      _buffer[_messageSize++] = value;
+      
+      return true;
+    }
+
+      // Current size of message in buffer.
+    uint8_t _messageSize;
+
+    // Index in the buffer of next argument to read.
+    uint8_t _nextIndex;
+
+    bool _needToFlush;
+
+
+  // Buffer that holds the data for current message to be sent.
+  char _buffer[MASSAGE_ENCODER_BUFFERSIZE];
+
 
 };
 
