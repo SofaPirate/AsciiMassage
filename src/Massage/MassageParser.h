@@ -53,6 +53,14 @@ public:
     
   }
 
+  void parseStream(Stream* stream, callbackFunction callback)
+  {
+  	  while ( stream->available() ) {
+    // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED 
+    		parse( stream->read() , callback );
+  	  }
+  }
+
     /// Flushes current message in buffer (if any).
   void flush() {
     _needToFlush = false;
