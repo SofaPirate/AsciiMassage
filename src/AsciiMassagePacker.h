@@ -8,7 +8,7 @@
 /// Main AsciiMassagePacker class.
 // Maybe Print should be private !!!
 // Print should be instantiated and not extended
-class AsciiMassagePacker : public MassagePacker, public Print
+class AsciiMassagePacker : public MassagePacker, private Print
 {
 public:
   /// Constructor.
