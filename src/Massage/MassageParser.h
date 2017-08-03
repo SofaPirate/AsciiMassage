@@ -52,7 +52,7 @@ public:
     }
     
   }
-
+/*
   void parseStream(Stream* stream, callbackFunction callback)
   {
   	  while ( stream->available() ) {
@@ -60,7 +60,7 @@ public:
     		parse( stream->read() , callback );
   	  }
   }
-
+*/
     /// Flushes current message in buffer (if any).
   void flush() {
     _needToFlush = false;
