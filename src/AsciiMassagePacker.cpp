@@ -47,6 +47,7 @@ void AsciiMassagePacker::endPacket()
 {
   write('\n');
   write(0);
+  _messageSize--;
 
 }
 

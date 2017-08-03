@@ -116,12 +116,12 @@ void AsciiMassageParser::_nextBlock(bool isInteger, uint8_t* value, size_t n, bo
     // Switch integer vs real.
     if (isInteger)
     {
-      long val = strtol(&_buffer[_nextIndex], 0, 10);
+      long val = strtol((const char*) &_buffer[_nextIndex], 0, 10);
       memcpy(value, &val, n);
     }
     else
     {
-      double  val = strtod(&_buffer[_nextIndex], 0);
+      double  val = strtod((const char*) &_buffer[_nextIndex], 0);
       memcpy(value, &val, n);
     }
 

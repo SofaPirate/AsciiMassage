@@ -76,7 +76,7 @@ public:
   bool fullMatch(const char* address)
   {
     // Verity if address matches beginning of buffer.
-    bool matches = (strcmp(_buffer, address) == 0);
+    bool matches = (strcmp((const char*) _buffer, address) == 0);
     return matches;
   }
 
@@ -122,7 +122,7 @@ public:
   bool _needToFlush;
 
   // Buffer that holds the data for current message to be sent.
-  char _buffer[MASSAGE_PARSER_BUFFERSIZE];
+  uint8_t  _buffer[MASSAGE_PARSER_BUFFERSIZE];
 
 };
 

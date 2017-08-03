@@ -38,7 +38,7 @@ public:
     return _messageSize;
   }
 
-  const char* buffer  () const { 
+  const uint8_t * buffer  () const { 
     return _buffer; 
   }
 
@@ -63,12 +63,11 @@ public:
 
   /// Ends the sending of a message.
   virtual void endPacket() = 0;
-
+/*
   void streamPacket(Stream* stream) {
-    endPacket();
-    stream->write( buffer() , size() );
+     stream->write( buffer() , size() );
   }
-
+*/
 
   /// Create a packet with no arguments.
   virtual void packEmpty(const char *address)
@@ -109,7 +108,7 @@ public:
     endPacket();
   }
 
-
+/*
   /// Create a packetwith no arguments.
   virtual void streamEmpty(Stream* stream, const char *address)
   {
@@ -144,7 +143,7 @@ public:
     packOneFloat(address, value);
     streamPacket(stream);
   }
-
+*/
 
   protected:
      // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
@@ -168,7 +167,7 @@ public:
 
 
   // Buffer that holds the data for current message to be sent.
-  char _buffer[MASSAGE_PACKER_BUFFERSIZE];
+  uint8_t _buffer[MASSAGE_PACKER_BUFFERSIZE];
 
 
 };
