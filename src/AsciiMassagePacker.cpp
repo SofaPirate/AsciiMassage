@@ -46,8 +46,8 @@ void AsciiMassagePacker::addFloat(float value)
 void AsciiMassagePacker::endPacket()
 {
   write('\n');
-  write(0);
-  _messageSize--;
+  //write(0);
+  //_messageSize--;
 
 }
 
