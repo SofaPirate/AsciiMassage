@@ -33,6 +33,7 @@ public:
   virtual void endPacket();
 
   // REQUIRED BY PRINT, BUT SHOULD NEVER BE USED EXTERNALLY !!!
+private:
   virtual size_t write(uint8_t) ;
 };
 
