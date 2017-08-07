@@ -23,73 +23,64 @@ public:
   typedef void (*callbackFunction)(void);
 
   /// Constructor.
-  MassageParser( ) {  
-    flush(); 
+  MassageParser( ) {
+    flush();
   }
 
   // Virtual destructor.
   virtual ~MassageParser() {}
 
   /**
-   * Flushes previous message and reads serial port. Returns true if new
-   * message has arrived.
+   * Reads one element of serial port, flushing previous message if needed.
+	 * Returns true iff new message has arrived.
+	 * Optional callback function will be called if new message has arrived.
    */
-   virtual bool parse(int data, callbackFunction callback = 0)
+  virtual bool parse(int data, callbackFunction callback = 0)
   {
-
+		// Flush if needed.
     if ( _needToFlush) {
-      
       flush();
     }
-    // Read stream.
-    
 
+    // Read stream.
     if ( _decode(data) ) {
-        _needToFlush = true;
-        
-        if (callback)
-	        callback();
+     	_needToFlush = true;
+
+			// Call optional callback.
+      if (callback)
+	    	callback();
 
 	    return true;
-        
     }
+
     return false;
-     
   }
 
-/*
-  void parseStream(Stream* stream, callbackFunction callback)
-  {
-  	  while ( stream->available() ) {
-    // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED 
-    		parse( stream->read() , callback );
-  	  }
-  }
-*/
-    /// Flushes current message in buffer (if any).
+  /// Flushes current message in buffer (if any).
   virtual void flush() {
     _needToFlush = false;
     _messageSize = 0;
-    
   }
 
-
-  /// If current message matches "address", calls function "callback" and returns true.
-  virtual bool dispatch(const char* address, callbackFunction callback) {
-    // Verity if address matches beginning of buffer.
-    if ( fullMatch(address) ) {
-      callback();
-      return true;
-    }
-    return false;
-  }
-
-   /// Return true if current message matches "address"
+  /// Return true if current message matches "address".
   virtual bool fullMatch(const char* address)
   {
     // Verity if address matches beginning of buffer.
     bool matches = (strcmp((const char*) _buffer, address) == 0);
     return matches;
+  }
+
+  /**
+	 * If current message matches "address", calls function "callback" and returns true;
+	 * (otherwise returns false).
+	 */
+  virtual bool dispatch(const char* address, callbackFunction callback) {
+    // Verify if address matches beginning of buffer.
+    if ( fullMatch(address) ) {
+      callback();
+      return true;
+    }
+    return false;
   }
 
   /// Reads next byte.
@@ -104,36 +95,38 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0) = 0;
 
-  protected:
-    /// Decode a single value read from the serial stream.
-    // True if an end is found.
-    virtual bool _decode(int serialByte) = 0;
+protected:
+  // Decodes a single value read from the serial stream (returns true if message is complete).
+  virtual bool _decode(int serialByte) = 0;
 
-    
-  /*
-      /// Processes a single value read from the serial stream.
-    virtual bool _processTx(int serialByte) = 0;
-    */
-    // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
-    bool _store(uint8_t value)
-    {
-      
-     if (_messageSize >= MASSAGE_PARSER_BUFFERSIZE) return false;
+/*
+  void parseStream(Stream* stream, callbackFunction callback)
+  {
+  	  while ( stream->available() ) {
+    // PARSE INPUT AND EXECUTRE massageReceived IF A COMPLETE MASSAGE IS RECEIVED
+    		parse( stream->read() , callback );
+  	  }
+  }
+*/
 
-      _buffer[_messageSize++] = value;
-      
-      return true;
-    }
+  // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
+  bool _store(uint8_t value)
+  {
+    if (_messageSize >= MASSAGE_PARSER_BUFFERSIZE)
+      return false;
 
-      // Current size of message in buffer.
-  size_t _messageSize;
+    _buffer[_messageSize++] = value;
+    return true;
+  }
 
-
+	// True if message has ended (internal use).
   bool _needToFlush;
 
-  // Buffer that holds the data for current message to be sent.
-  uint8_t  _buffer[MASSAGE_PARSER_BUFFERSIZE];
+  // Current size of message in buffer.
+  size_t _messageSize;
 
+  // Buffer that holds the data for current message to be sent.
+  uint8_t _buffer[MASSAGE_PARSER_BUFFERSIZE];
 };
 
 
