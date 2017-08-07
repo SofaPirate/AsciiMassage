@@ -16,7 +16,7 @@ public:
   virtual int8_t nextByte(bool* error=0);
 
   /// Reads next int.
-  virtual int16_t nextInt(bool* error=0); 
+  virtual int16_t nextInt(bool* error=0);
 
   /// Reads next long.
   virtual int32_t nextLong(bool* error=0);
@@ -24,14 +24,13 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
 
+  /// Flushes current message in buffer (if any).
   virtual void flush();
 
 protected:
-  /// Decode a single value read from the serial stream.
-  /// Returns true if a massage is terminated
-  virtual bool _decode(int serialByte) ;
-  /// Processes a single value read from the serial stream.
-  // virtual bool _processTx(int serialByte) ;
+  /// Decode sa single value read from the serial stream.
+  /// Returns true if a massage is terminated.
+  virtual bool _decode(int serialByte);
 
 private:
   // Moves nextIndex to the next token.
@@ -43,9 +42,8 @@ private:
   // Helper function to read next value.
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
 
+	// Keeps track of next index where to store data in buffer.
   int _nextIndex;
-
-
 };
 
 

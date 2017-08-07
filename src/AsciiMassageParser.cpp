@@ -1,5 +1,3 @@
-//#define DEBUG_TOM
-
 //ADDED FOR COMPATIBILITY WITH WIRING
 extern "C" {
   #include <stdlib.h>
@@ -8,14 +6,13 @@ extern "C" {
 #include "AsciiMassageParser.h"
 
 AsciiMassageParser::AsciiMassageParser() {
-    flush();
-  }
+  flush();
+}
 
 void AsciiMassageParser::flush() {
-    MassageParser::flush();
-    _nextIndex = 0;
-  }
-
+  MassageParser::flush();
+  _nextIndex = 0;
+}
 
 int8_t AsciiMassageParser::nextByte(bool* error) {
   int8_t v;
@@ -75,7 +72,7 @@ bool AsciiMassageParser::_decode(int streamByte)
 
         return true;
       }
-        
+
       flush();
       break;
     case 0 :
@@ -133,4 +130,3 @@ void AsciiMassageParser::_nextBlock(bool isInteger, uint8_t* value, size_t n, bo
   }
 
 }
-

@@ -34,8 +34,6 @@ public:
 
   // REQUIRED BY PRINT, BUT SHOULD NEVER BE USED EXTERNALLY !!!
   virtual size_t write(uint8_t) ;
-  
-
 };
 
 

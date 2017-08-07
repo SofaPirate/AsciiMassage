@@ -1,5 +1,3 @@
-//#define DEBUG_TOM
-
 //ADDED FOR COMPATIBILITY WITH WIRING
 extern "C" {
   #include <stdlib.h>
@@ -8,9 +6,8 @@ extern "C" {
 #include "AsciiMassagePacker.h"
 
 AsciiMassagePacker::AsciiMassagePacker() {
-    flush();
-  }
-
+  flush();
+}
 
 void AsciiMassagePacker::beginPacket(const char* address)
 {
@@ -32,15 +29,12 @@ void AsciiMassagePacker::addLong(int32_t value)
 {
   write(' ');
   print(value);
-
-
 }
 
 void AsciiMassagePacker::addFloat(float value)
 {
   write(' ');
   print(value);
-
 }
 
 void AsciiMassagePacker::endPacket()
@@ -48,11 +42,9 @@ void AsciiMassagePacker::endPacket()
   write('\n');
   //write(0);
   //_messageSize--;
-
 }
 
-  size_t AsciiMassagePacker::write(uint8_t data) {
-        _store(data);
-        return 0;
-    }
-
+size_t AsciiMassagePacker::write(uint8_t data) {
+	_store(data);
+  return 0;
+}
