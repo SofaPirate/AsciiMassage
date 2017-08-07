@@ -11,6 +11,10 @@ AsciiMassageParser::AsciiMassageParser() {
     flush();
   }
 
+void AsciiMassageParser::flush() {
+    MassageParser::flush();
+    _nextIndex = 0;
+  }
 
 
 int8_t AsciiMassageParser::nextByte(bool* error) {

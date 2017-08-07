@@ -33,7 +33,7 @@ void setup() {
   serial = new Serial(this, portName, 57600);
   
 
-   inbound = new AsciiMassageParser(this,"massageReceived");
+   inbound = new AsciiMassageParser(this);
    
 }
 
@@ -42,7 +42,7 @@ void draw() {
     
   background(0);
   
-   while ( serial.available( ) > 0 ) inbound.parse( serial.read( ) );
+   while ( serial.available( ) > 0 ) inbound.parse( serial.read( ) , "massageReceived" );
 
   textAlign(CENTER, CENTER);
   text( "ms : " + msFromArduino , width * 0.5 , height * 0.5);

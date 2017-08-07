@@ -34,7 +34,7 @@ public:
    * Flushes previous message and reads serial port. Returns true if new
    * message has arrived.
    */
-   void parse(int data, callbackFunction callback)
+   virtual bool parse(int data, callbackFunction callback = 0)
   {
 
     if ( _needToFlush) {
@@ -47,11 +47,16 @@ public:
     if ( _decode(data) ) {
         _needToFlush = true;
         
-        callback();
+        if (callback)
+	        callback();
+
+	    return true;
         
     }
-    
+    return false;
+     
   }
+
 /*
   void parseStream(Stream* stream, callbackFunction callback)
   {
@@ -62,18 +67,25 @@ public:
   }
 */
     /// Flushes current message in buffer (if any).
-  void flush() {
+  virtual void flush() {
     _needToFlush = false;
     _messageSize = 0;
-    _nextIndex = 0;
+    
   }
 
 
   /// If current message matches "address", calls function "callback" and returns true.
-  //virtual bool dispatch(const char* address, callbackFunction callback) = 0;
+  virtual bool dispatch(const char* address, callbackFunction callback) {
+    // Verity if address matches beginning of buffer.
+    if ( fullMatch(address) ) {
+      callback();
+      return true;
+    }
+    return false;
+  }
 
    /// Return true if current message matches "address"
-  bool fullMatch(const char* address)
+  virtual bool fullMatch(const char* address)
   {
     // Verity if address matches beginning of buffer.
     bool matches = (strcmp((const char*) _buffer, address) == 0);
@@ -116,8 +128,6 @@ public:
       // Current size of message in buffer.
   size_t _messageSize;
 
-  // Index in the buffer of next argument to read.
-  uint8_t _nextIndex;
 
   bool _needToFlush;
 

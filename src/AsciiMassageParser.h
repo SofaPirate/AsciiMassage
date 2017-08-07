@@ -24,6 +24,8 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
 
+  virtual void flush();
+
 protected:
   /// Decode a single value read from the serial stream.
   /// Returns true if a massage is terminated
@@ -40,6 +42,8 @@ private:
 
   // Helper function to read next value.
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
+
+  int _nextIndex;
 
 
 };

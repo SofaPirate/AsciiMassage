@@ -20,7 +20,7 @@
 class MassagePacker
 {
 public:
-  typedef void (*callbackFunction)(void);
+  
 
   /// Constructor.
   MassagePacker() {
@@ -29,15 +29,17 @@ public:
 
     /// Flushes current message in buffer (if any).
   void flush() {
-    _needToFlush = false;
+   
     _messageSize = 0;
-    _nextIndex = 0;
+    
   }
-
-  size_t size() {
+   
+   /// Returns size of buffer.
+  size_t size() const {
     return _messageSize;
   }
 
+  // Returns a pointer to the buffer.
   const uint8_t * buffer  () const { 
     return _buffer; 
   }
@@ -159,12 +161,6 @@ public:
 
       // Current size of message in buffer.
     size_t _messageSize;
-
-    // Index in the buffer of next argument to read.
-    uint8_t _nextIndex;
-
-    bool _needToFlush;
-
 
   // Buffer that holds the data for current message to be sent.
   uint8_t _buffer[MASSAGE_PACKER_BUFFERSIZE];
