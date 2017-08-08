@@ -27,13 +27,15 @@ extern "C" {
 #include "AsciiMassagePacker.h"
 
 AsciiMassagePacker::AsciiMassagePacker() {
-  flush();
+    MassagePacker::flush();
 }
+
+
 
 void AsciiMassagePacker::beginPacket(const char* address)
 {
-  flush();
-  print(address);
+  MassagePacker::flush();
+  while(*address) write(*address++); // print(string) does not work Duemilanove with Diecimila
 }
 
 void AsciiMassagePacker::addByte(uint8_t value)
