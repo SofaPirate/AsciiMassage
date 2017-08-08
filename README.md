@@ -30,6 +30,40 @@ Send the packed massage (through serial in this case):
 Serial.write( outbound.buffer(), outbound.size() );
 ```
 
+Receiving and parsing a massage
+-------------------------------
+
+Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
+```
+#include <AsciiMassageParser.h>
+AsciiMassagePacker inbound;
+```
+
+Inside loop() receive the data with serial in this case, parse it with the AsciiMassageParser and call the "massageReceived" function one a massage is completed:
+```
+while ( Serial.available() ) {
+    inbound.parse( Serial.read() , massageReceived );
+  }
+```
+
+Add a function in your code called "massageReceived" to process the completed massage:
+```
+void massageReceived() {
+	// process completed massage here.
+}
+```
+
+This example processes a massage that starts with the address "value" and that contains one long followed by one int:
+```
+  // Does the massage's address match "value"?
+  if ( inbound.fullMatch ("value") ) {
+    // Get the first long.
+    long ms = inbound.nextLong();
+    // Get the next int.
+    int an0 = inbound.nextInt();
+}
+```
+
 
 AsciiMassageParser
 -------------
