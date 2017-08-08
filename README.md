@@ -11,7 +11,7 @@ A *massage* message always starts with an address string and is followed by a us
 Packing and sending a massage
 -----------------------------
 
-Add the library to the top of your code and instantiate an AsciiMassagePacker:
+Add the library to the top of your code and instantiate an AsciiMassagePacker called "outbound":
 ```
 #include <AsciiMassagePacker.h>
 AsciiMassagePacker outbound;
@@ -24,6 +24,12 @@ outbound.addLong( millis() ); // Add the milliseconds.
 outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
 outbound.endPacket(); // End the packet.
 ```
+
+Send the packed massage (through serial in this case):
+```
+Serial.write( outbound.buffer(), outbound.size() );
+```
+
 
 AsciiMassageParser
 -------------
