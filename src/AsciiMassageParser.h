@@ -63,7 +63,7 @@ private:
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
 
 	// Keeps track of next index where to store data in buffer.
-  int _nextIndex;
+  size_t _nextIndex;
 };
 
 
