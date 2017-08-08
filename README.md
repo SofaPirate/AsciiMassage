@@ -8,8 +8,8 @@ A *massage* message always starts with an address string and is followed by a us
 
 *Massages* can be sent and received over different communication protocols such as serial, UDP, or web sockets.
 
-Packing and sending a massage
------------------------------
+Packing and sending a massage example
+-------------------------------------
 
 Add the library to the top of your code and instantiate an AsciiMassagePacker called "outbound":
 ```
@@ -30,8 +30,8 @@ Send the packed massage (through serial in this case):
 Serial.write( outbound.buffer(), outbound.size() );
 ```
 
-Receiving and parsing a massage
--------------------------------
+Receiving and parsing a massage example
+---------------------------------------
 
 Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
 ```
