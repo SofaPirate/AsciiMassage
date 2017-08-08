@@ -8,6 +8,23 @@ A *massage* message always starts with an address string and is followed by a us
 
 *Massages* can be sent and received over different communication protocols such as serial, UDP, or web sockets.
 
+Packing and sending a massage
+-----------------------------
+
+Add the library to the top of your code and instantiate an AsciiMassagePacker:
+```
+#include <AsciiMassagePacker.h>
+AsciiMassagePacker outbound;
+```
+
+Pack an example massage:
+```
+outbound.beginPacket("value"); // Start a packet with the address called "value".
+outbound.addLong( millis() ); // Add the milliseconds.
+outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
+outbound.endPacket(); // End the packet.
+```
+
 AsciiMassageParser
 -------------
 
