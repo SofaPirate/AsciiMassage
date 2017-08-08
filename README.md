@@ -43,7 +43,7 @@ Inside loop() receive the data with serial in this case, parse it with the Ascii
 ```
 while ( Serial.available() ) {
     inbound.parse( Serial.read() , massageReceived );
-  }
+}
 ```
 
 Add a function in your code called "massageReceived" to process the completed massage:
@@ -55,8 +55,8 @@ void massageReceived() {
 
 This example processes a massage that starts with the address "value" and that contains one long followed by one int:
 ```
-  // Does the massage's address match "value"?
-  if ( inbound.fullMatch ("value") ) {
+// Does the massage's address match "value"?
+if ( inbound.fullMatch ("value") ) {
     // Get the first long.
     long ms = inbound.nextLong();
     // Get the next int.
