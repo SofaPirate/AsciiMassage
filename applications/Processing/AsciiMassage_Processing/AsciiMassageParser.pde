@@ -5,7 +5,7 @@ class AsciiMassageParser {
 
   java.lang.reflect.Method callback;
   Object instance;
-  String callbackName;
+  String callbackName = "";
 
   byte[] receivedDataArray = new byte[1024];
   int receivedDataIndex = 0;
@@ -15,54 +15,65 @@ class AsciiMassageParser {
   int currentWord = 0;
   boolean ready = false;
 
+  boolean needToFlush = false;
 
-  AsciiMassageParser( Object sketch, String callbackName  ) {
+
+  AsciiMassageParser( Object sketch ) {
 
     this.instance = sketch;
-    this.callbackName = callbackName;
-
-
-    callback = findCallback(callbackName);
-    
   }
 
   private void flush() {
+    needToFlush = false;
     receivedDataIndex = 0;
     currentWord = 0;
     ready = false;
   }
 
-  void parse( int data ) {
-
-
-    if ( receivedDataIndex > receivedDataArray.length ) {
+  boolean parse( int data ) {
+    
+    if ( needToFlush || ( receivedDataIndex > receivedDataArray.length ) ) {
       flush();
     }
 
-
     if ( data == 10  ) {
-
+      needToFlush = true;
       if ( receivedDataIndex > 0 ) {
-
         String rawMassage = new String(receivedDataArray, 0, receivedDataIndex);
         words = splitTokens(rawMassage);
         ready = true;
         currentWord = 1;
         
-        try {
-          callback.invoke(instance);
-        } 
-        catch (ReflectiveOperationException e) {
-          print("Dropping massage, could not find callback called "+callbackName);
-          
-          
-        }
+        return true;
       }
-      flush();
+      
     } else if ( data > 31 && data < 128) {
       receivedDataArray[receivedDataIndex] = byte(data);
       receivedDataIndex++;
     }
+    return false;
+  }
+
+  boolean parse( int data, String callbackName) {
+
+    boolean completed =  parse(data);
+    if ( completed ) {
+      
+      if (this.callbackName.equals(callbackName) == false ) {
+        this.callbackName = callbackName;
+        callback = findCallback(callbackName);
+      }
+      
+      try {
+        callback.invoke(instance);
+      } 
+      catch (ReflectiveOperationException e) {
+        print("Dropping massage, could not find callback called "+callbackName);
+      }
+    }
+
+    return completed;
+
   }
 
 
