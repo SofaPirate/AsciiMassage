@@ -5,11 +5,11 @@
 			"major" : 7,
 			"minor" : 3,
 			"revision" : 4,
-			"architecture" : "x86",
+			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 42.0, 111.0, 936.0, 751.0 ],
+		"rect" : [ 569.0, 125.0, 936.0, 751.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,161 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"format" : 6,
+					"id" : "obj-13",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 149.0, 477.0, 170.0, 22.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"format" : 6,
+					"id" : "obj-9",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 59.0, 477.0, 50.0, 22.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 105.5, 402.0, 74.0, 22.0 ],
+					"style" : "",
+					"text" : "route a0 ms"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 197.0, 403.0, 434.0, 20.0 ],
+					"style" : "",
+					"text" : "Route the massage by its address. "
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 277.0, 355.0, 434.0, 20.0 ],
+					"style" : "",
+					"text" : "This subpatcher unpack an ASCII massage to Max messages."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-49",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 277.0, 180.0, 434.0, 20.0 ],
+					"style" : "",
+					"text" : "This subpatcher packs the Max messages to the ASCII massage format."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-46",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 266.0, 34.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-47",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 266.0, 88.0, 41.0, 22.0 ],
+					"style" : "",
+					"text" : "a0 $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 188.0, 34.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 188.0, 88.0, 43.0, 22.0 ],
+					"style" : "",
+					"text" : "ms $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "toggle",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 100.0, 46.0, 24.0, 24.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 100.0, 83.0, 34.0, 22.0 ],
+					"style" : "",
+					"text" : "d $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-23",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -49,7 +204,7 @@
 							"major" : 7,
 							"minor" : 3,
 							"revision" : 4,
-							"architecture" : "x86",
+							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
@@ -237,7 +392,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 598.0, 293.0, 129.0, 22.0 ],
+					"patching_rect" : [ 653.0, 301.0, 160.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -247,7 +402,7 @@
 					}
 ,
 					"style" : "",
-					"text" : "p AsciiMassageParser"
+					"text" : "p AsciiMassageParserSerial"
 				}
 
 			}
@@ -264,7 +419,7 @@
 							"major" : 7,
 							"minor" : 3,
 							"revision" : 4,
-							"architecture" : "x86",
+							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
@@ -429,7 +584,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 598.0, 220.0, 131.0, 22.0 ],
+					"patching_rect" : [ 653.0, 228.0, 162.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -439,7 +594,7 @@
 					}
 ,
 					"style" : "",
-					"text" : "p AsciiMassagePacker"
+					"text" : "p AsciiMassagePackerSerial"
 				}
 
 			}
@@ -450,7 +605,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 598.0, 255.5, 168.0, 22.0 ],
+					"patching_rect" : [ 653.0, 263.5, 168.0, 22.0 ],
 					"style" : "",
 					"text" : "serial a @baud 57600 @dtr 1"
 				}
@@ -458,12 +613,13 @@
 			}
 , 			{
 				"box" : 				{
+					"bubble" : 1,
 					"id" : "obj-20",
 					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 382.0, 235.5, 150.0, 62.0 ],
+					"patching_rect" : [ 417.0, 243.5, 196.0, 66.0 ],
 					"style" : "",
 					"text" : "This is a bpatcher with a UI for the serial object. It can be replaced by the dataflow on the right."
 				}
@@ -475,7 +631,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 71.5, 389.0, 83.0, 22.0 ],
+					"patching_rect" : [ 15.0, 397.0, 83.0, 22.0 ],
 					"style" : "",
 					"text" : "print received"
 				}
@@ -494,7 +650,7 @@
 							"major" : 7,
 							"minor" : 3,
 							"revision" : 4,
-							"architecture" : "x86",
+							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
@@ -682,7 +838,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 71.5, 347.0, 129.0, 22.0 ],
+					"patching_rect" : [ 105.5, 354.0, 160.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -692,7 +848,7 @@
 					}
 ,
 					"style" : "",
-					"text" : "p AsciiMassageParser"
+					"text" : "p AsciiMassageParserSerial"
 				}
 
 			}
@@ -709,7 +865,7 @@
 							"major" : 7,
 							"minor" : 3,
 							"revision" : 4,
-							"architecture" : "x86",
+							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
@@ -874,7 +1030,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 71.5, 173.0, 131.0, 22.0 ],
+					"patching_rect" : [ 105.5, 180.0, 162.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -884,7 +1040,7 @@
 					}
 ,
 					"style" : "",
-					"text" : "p AsciiMassagePacker"
+					"text" : "p AsciiMassagePackerSerial"
 				}
 
 			}
@@ -910,7 +1066,7 @@
 							"major" : 7,
 							"minor" : 3,
 							"revision" : 4,
-							"architecture" : "x86",
+							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
@@ -1271,7 +1427,6 @@
 							}
 , 							{
 								"box" : 								{
-									"active" : 0,
 									"bgcolor" : [ 0.666667, 0.666667, 0.666667, 1.0 ],
 									"bgoncolor" : [ 0.454902, 0.772549, 0.384314, 1.0 ],
 									"id" : "obj-9",
@@ -1336,7 +1491,7 @@
 									"numoutlets" : 3,
 									"outlettype" : [ "", "", "" ],
 									"patching_rect" : [ 316.0, 65.0, 111.0, 22.0 ],
-									"restore" : [ 115200 ],
+									"restore" : [ 57600 ],
 									"saved_object_attributes" : 									{
 										"parameter_enable" : 0
 									}
@@ -1549,7 +1704,7 @@
 								"box" : 								{
 									"allowdrag" : 0,
 									"id" : "obj-19",
-									"items" : [ "(serial", "port)", ",", "COM6" ],
+									"items" : [ "(serial", "port)", ",", "COM10" ],
 									"maxclass" : "umenu",
 									"numinlets" : 1,
 									"numoutlets" : 3,
@@ -2093,7 +2248,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 71.5, 212.0, 302.0, 109.0 ],
+					"patching_rect" : [ 105.5, 219.0, 302.0, 109.0 ],
 					"varname" : "tof.serial",
 					"viewvisibility" : 1
 				}
@@ -2109,8 +2264,38 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
+					"order" : 1,
 					"source" : [ "obj-15", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"order" : 0,
+					"source" : [ "obj-15", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
@@ -2130,8 +2315,43 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"source" : [ "obj-46", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 0 ],
+					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"source" : [ "obj-8", 0 ]
 				}
 
 			}

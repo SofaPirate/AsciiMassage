@@ -1,3 +1,6 @@
+// MOST ARDUINOS HAVE THE DEBUG LED ON PIN 13.
+int debugLedPin = 13;
+
 // ICLUDE MASSAGE
 #include <AsciiMassagePacker.h>
 #include <AsciiMassageParser.h>
@@ -20,8 +23,8 @@ void setup() {
   // INITIATE SERIAL COMMUNICATION.
   Serial.begin(57600);
 
-  // SET PIN 13 (DEBUG LEG) AS OUTPUT.
-  pinMode(13, OUTPUT);
+  // SET DEBUG LEG PIN AS OUTPUT.
+  pinMode(debugLedPin, OUTPUT);
 
 }
 
@@ -44,7 +47,7 @@ void receivePacket() {
     // PARSE INPUT. RETURNS 1 (TRUE) IF MASSAGE IS COMPLETE.
     if ( inbound.parse( Serial.read() ) ) {
       if ( inbound.fullMatch("d") ) {
-        digitalWrite(13, inbound.nextInt() );
+        digitalWrite(debugLedPin, inbound.nextInt() );
       } else if ( inbound.fullMatch("ms") ) {
         sendMs = inbound.nextInt();
       } else if ( inbound.fullMatch("a0") ) {
