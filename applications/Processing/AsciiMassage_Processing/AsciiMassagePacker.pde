@@ -12,7 +12,7 @@ class AsciiMassagePacker {
 
   // Returns a reference to the buffer.
   byte[] buffer()  {
-    if ( !ended ) println("Warning: betting the buffer of an unended packet!");
+    if ( !ended ) println("Warning: getting the buffer of an unended packet!");
     return internalString.getBytes();
   }
 

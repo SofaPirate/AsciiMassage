@@ -1,6 +1,6 @@
 // EXAMPLE FOR ESP8266
 
-// A CYCLING 74 EXAMPLE TO COMMUNICATION WITH THIS SKETCH CAN BE FOUND INSIDE 
+// A CYCLING 74 EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND INSIDE 
 // "applications/Cycling 74 Max 7/AsciiMassenger UDP.maxpat" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
