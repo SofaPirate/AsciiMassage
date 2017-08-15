@@ -1,3 +1,13 @@
+// A PROCESSING EXAMPLE TO COMMUNICATION WITH THIS SKETCH CAN BE FOUND  INSIDE
+// "applications/Processing/AsciiMassage_Processing/" OF THE FOLLOWING DOWNLOAD :
+// https://github.com/SofaPirate/AsciiMassage/archive/master.zip
+
+// A CYCLING 74 EXAMPLE TO COMMUNICATION WITH THIS SKETCH CAN BE FOUND INSIDE 
+// "applications/Cycling 74 Max 7/AsciiMassenger.maxpat" OF THE FOLLOWING DOWNLOAD :
+// https://github.com/SofaPirate/AsciiMassage/archive/master.zip
+
+
+
 // MOST ARDUINOS HAVE THE DEBUG LED ON PIN 13.
 int debugLedPin = 13;
 

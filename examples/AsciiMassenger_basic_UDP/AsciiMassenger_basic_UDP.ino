@@ -1,5 +1,9 @@
 // EXAMPLE FOR ESP8266
 
+// A CYCLING 74 EXAMPLE TO COMMUNICATION WITH THIS SKETCH CAN BE FOUND INSIDE 
+// "applications/Cycling 74 Max 7/AsciiMassenger UDP.maxpat" OF THE FOLLOWING DOWNLOAD :
+// https://github.com/SofaPirate/AsciiMassage/archive/master.zip
+
 // THIS EXAMPLE USES THE DEBUG LED PIN FOR THE WEMOS D1 MINI (https://wiki.wemos.cc/products:d1:d1_mini).
 // CHANGE THIS PIN TO FIT YOUR MODEL.
 int debugLedPin = 2;
