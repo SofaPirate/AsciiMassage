@@ -35,7 +35,9 @@ AsciiMassagePacker::AsciiMassagePacker() {
 void AsciiMassagePacker::beginPacket(const char* address)
 {
   MassagePacker::flush();
+  
   while(*address) write(*address++); // print(string) does not work Duemilanove with Diecimila
+
 }
 
 void AsciiMassagePacker::addByte(uint8_t value)
@@ -68,6 +70,7 @@ void AsciiMassagePacker::endPacket()
 }
 
 size_t AsciiMassagePacker::write(uint8_t data) {
-	_store(data);
-  return 0;
+	MassagePacker::_store(data);
+	
+  return 1;
 }
