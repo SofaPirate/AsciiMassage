@@ -13,7 +13,7 @@ Lorsque vous demarrez ce code, tout les ports
  String portName = "COM4";
  */
 
-String portName = "COM10";
+String portName = "COM19";
 
 // Declarer une instance de la classe Serial:
 Serial serial;
@@ -38,9 +38,7 @@ void setup() {
   
 }
 
-void sendPacket() {
-  serial.write( outbound.buffer() );
-}
+
 
 void receivePacket() {
   while ( serial.available( ) > 0 ) {
