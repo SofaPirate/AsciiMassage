@@ -7,10 +7,6 @@
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
 
-
-// MOST ARDUINOS HAVE THE DEBUG LED ON PIN 13.
-int debugLedPin = 13;
-
 // INCLUDE MASSAGE
 #include <AsciiMassagePacker.h>
 #include <AsciiMassageParser.h>
@@ -19,11 +15,6 @@ int debugLedPin = 13;
 AsciiMassageParser inbound;
 AsciiMassagePacker outbound;
 
-bool sendAnalog = true;
-unsigned long lastTimeSentAnalogReading = 0;
-
-bool sendMs = true;
-unsigned long lastTimeSentMs = 0;
 
 ///////////
 // SETUP //
@@ -32,9 +23,6 @@ void setup() {
 
   // INITIATE SERIAL COMMUNICATION.
   Serial.begin(57600);
-
-  // SET DEBUG LEG PIN AS OUTPUT.
-  pinMode(debugLedPin, OUTPUT);
 
 }
 
@@ -46,7 +34,7 @@ void setup() {
 // receivePacket() CHECK FOR A COMPLETED MASSAGE AND
 // INDICATES WHAT TO DO WITH ITS CONTENTS.
 
-// SEND PACKED PACKET OVER SERIAL.
+// SEND A PRE-PACKED PACKET OVER SERIAL.
 void sendPacket() {
   Serial.write(outbound.buffer(), outbound.size());
 }
@@ -56,12 +44,11 @@ void receivePacket() {
   while ( Serial.available() ) {
     // PARSE INPUT. RETURNS 1 (TRUE) IF MASSAGE IS COMPLETE.
     if ( inbound.parse( Serial.read() ) ) {
-      if ( inbound.fullMatch("d") ) {
-        digitalWrite(debugLedPin, inbound.nextInt() );
-      } else if ( inbound.fullMatch("ms") ) {
-        sendMs = inbound.nextInt();
-      } else if ( inbound.fullMatch("a0") ) {
-        sendAnalog = inbound.nextInt();
+      if ( inbound.fullMatch("address") ) {
+      	byte byteValue = inbound.nextByte();
+        int intValue = inbound.nextInt();
+        float floatValue = inbound.nextFloat();
+        long longValue = inbound.nextLong();
       } else {
         // SEND "what?" WHEN A MASSAGE IS NOT RECOGNIZED.
         outbound.packEmpty("what?");
@@ -77,22 +64,31 @@ void receivePacket() {
 void loop() {
 
   receivePacket();
+ 
 
-  if ( sendMs && (millis() - lastTimeSentMs >= 1000) ) {
-    lastTimeSentMs = millis();
-    
-    outbound.beginPacket("ms");
-    outbound.addLong(millis());
-    outbound.endPacket();
-    sendPacket();
+  // BUILD A PACKET:
 
-  }
+  /// Begins the sending of a message.
+  outbound.beginPacket("address");
 
-  if ( sendAnalog && (millis() -lastTimeSentAnalogReading  >= 1000) ) {
-    lastTimeSentAnalogReading = millis();
-    outbound.packOneInt("a0", analogRead(0) );
-    sendPacket();
-  }
+  /// Adds a byte.
+  outbound.addByte(45);
+
+  /// Adds an int.
+  outbound.addInt(1024);
+
+  /// Adds a long.
+  outbound.addLong(64823);
+
+  /// Adds a float.
+  outbound.addFloat(183.92);
+
+  /// Ends the sending of a message.
+  outbound.endPacket();
+  
+  // SEND THE PACKET:
+
+  sendPacket();
 
 }
 

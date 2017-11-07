@@ -13,7 +13,7 @@ Lorsque vous demarrez ce code, tout les ports
  String portName = "COM4";
  */
 
-String portName = "COM12";
+String portName = "COM18";
 
 // Declarer une instance de la classe Serial:
 Serial serial;

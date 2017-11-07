@@ -54,9 +54,9 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 172.0, 131.0, 434.0, 20.0 ],
+					"patching_rect" : [ 174.0, 131.0, 434.0, 20.0 ],
 					"style" : "",
-					"text" : "Send a \"servo\" massage followed by an int between 0 and 180."
+					"text" : "Send an \"angle\" massage followed by an int between 0 and 180."
 				}
 
 			}
@@ -69,7 +69,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 105.5, 131.0, 57.0, 22.0 ],
 					"style" : "",
-					"text" : "servo $1"
+					"text" : "angle $1"
 				}
 
 			}
@@ -1061,7 +1061,7 @@
 									"presentation" : 1,
 									"presentation_rect" : [ 99.0, 56.0, 194.0, 20.0 ],
 									"style" : "",
-									"text" : "COM10"
+									"text" : "COM18"
 								}
 
 							}
@@ -1538,7 +1538,7 @@
 									"numoutlets" : 3,
 									"outlettype" : [ "", "", "" ],
 									"patching_rect" : [ 696.5, 615.0, 105.0, 22.0 ],
-									"restore" : [ "COM10" ],
+									"restore" : [ "COM18" ],
 									"saved_object_attributes" : 									{
 										"parameter_enable" : 0
 									}
@@ -2233,7 +2233,7 @@
 		"dependency_cache" : [ 			{
 				"name" : "tof.serial.maxpat",
 				"bootpath" : "~/Documents/Max 7/Packages/tof74/patchers",
-				"patcherrelativepath" : "../../../../../Max 7/Packages/tof74/patchers",
+				"patcherrelativepath" : "../../../../../../Max 7/Packages/tof74/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}

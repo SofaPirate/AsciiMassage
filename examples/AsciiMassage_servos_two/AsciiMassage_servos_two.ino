@@ -23,7 +23,10 @@ AsciiMassagePacker outbound;
 #include <Servo.h>
 
 // INSTANTIATE A SERVO OBJECT.
-Servo myServo;
+Servo servo1;
+
+// INSTANTIATE A SERVO OBJECT.
+Servo servo2;
 
 
 ///////////
@@ -34,8 +37,9 @@ void setup() {
   // INITIATE SERIAL COMMUNICATION.
   Serial.begin(57600);
 
-  // ATTACH THE SERVO TO PIN 11
-  myServo.attach(11);
+  // ATTACH THE SERVOS TO PINS 11 AND 12
+  servo1.attach(11);
+  servo2.attach(12);
 
   pinMode(13,OUTPUT);
 
@@ -64,16 +68,16 @@ void receivePacket() {
       digitalWrite(13, !digitalRead(13));
 
       // THE "angle" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN DEGREES.
-      if ( inbound.fullMatch("angle") ) {
+      if ( inbound.fullMatch("s1") ) {
 
         int value = inbound.nextInt();
-        myServo.write( value );
+        servo1.write( value );
 
       // THE "us" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN MICROSECONDS.
-      } else if ( inbound.fullMatch("us") ) {
+      } else if ( inbound.fullMatch("s2") ) {
 
         int value = inbound.nextInt();
-        myServo.writeMicroseconds( value );
+        servo2.write( value );
 
       // SEND "what?" WHEN A MASSAGE IS NOT RECOGNIZED.
       } else {
