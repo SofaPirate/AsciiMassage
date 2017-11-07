@@ -1,9 +1,9 @@
 // A PROCESSING EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND  INSIDE
-// "applications/Processing/AsciiMassage_Processing/" OF THE FOLLOWING DOWNLOAD :
+// "extras/applications/Processing/AsciiMassage_Processing/" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
 // A CYCLING 74 EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND INSIDE 
-// "applications/Cycling 74 Max 7/AsciiMassenger.maxpat" OF THE FOLLOWING DOWNLOAD :
+// "extras/applications/Cycling 74 Max 7/AsciiMassenger.maxpat" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
 
@@ -11,7 +11,7 @@
 // MOST ARDUINOS HAVE THE DEBUG LED ON PIN 13.
 int debugLedPin = 13;
 
-// ICLUDE MASSAGE
+// INCLUDE MASSAGE
 #include <AsciiMassagePacker.h>
 #include <AsciiMassageParser.h>
 
@@ -42,7 +42,7 @@ void setup() {
 // SEND AND RECEIVE //
 //////////////////////
 // THE FOLLOWING FUNCTIONS ARE HELPER FUNCTIONS.
-// sendPacket() SENDS OUT A MASSAGE ONCE IT IS PACKED.
+// sendPacket() SENDS OUT A PRE-PACKED MASSAGE.
 // receivePacket() CHECK FOR A COMPLETED MASSAGE AND
 // INDICATES WHAT TO DO WITH ITS CONTENTS.
 
@@ -63,6 +63,7 @@ void receivePacket() {
       } else if ( inbound.fullMatch("a0") ) {
         sendAnalog = inbound.nextInt();
       } else {
+        // SEND "what?" WHEN A MASSAGE IS NOT RECOGNIZED.
         outbound.packEmpty("what?");
         sendPacket();
       }
