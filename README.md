@@ -39,7 +39,7 @@ Receiving and parsing a massage
 Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
 ```
 #include <AsciiMassageParser.h>
-AsciiMassagePacker inbound;
+AsciiMassageParser inbound;
 
 ```
 
@@ -68,7 +68,7 @@ Receiving and parsing a massage with a callback example
 Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
 ```
 #include <AsciiMassageParser.h>
-AsciiMassagePacker inbound;
+AsciiMassageParser inbound;
 ```
 
 Inside loop() receive the data (with serial in this case), parse it with the AsciiMassageParser and call the "massageReceived" function one a massage is completed:
