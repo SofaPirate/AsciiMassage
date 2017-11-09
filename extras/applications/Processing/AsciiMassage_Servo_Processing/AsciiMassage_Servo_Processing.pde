@@ -1,4 +1,6 @@
 import processing.serial.*;
+
+
 /*
 Lorsque vous demarrez ce code, tout les ports
  series s'affichent dans la fenetre de deboguage.
@@ -13,12 +15,11 @@ Lorsque vous demarrez ce code, tout les ports
  String portName = "COM4";
  */
 
-String portName = "COM18";
+String portName = "COM19";
 
 // Declarer une instance de la classe Serial:
 Serial serial;
 
-AsciiMassageParser inbound = new AsciiMassageParser(this); // UNUSED IN THIS EXAMPLE
 AsciiMassagePacker outbound = new AsciiMassagePacker();
 
 
@@ -35,21 +36,10 @@ void setup() {
 }
 
 
- // UNUSED IN THIS EXAMPLE.
-void receivePacket() {
-  while ( serial.available( ) > 0 ) {
 
-    if ( inbound.parse( serial.read() ) ) {
-
-      println("Received unexpected massage");
-      
-    }
-  }
-}
 
 void draw() {
 
-  receivePacket();  // UNUSED IN THIS EXAMPLE.
   
   float radians = map( mouseX, 0 , width, PI , TWO_PI );
   
