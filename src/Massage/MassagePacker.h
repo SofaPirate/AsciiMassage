@@ -81,6 +81,12 @@ public:
   /// Ends the sending of a message.
   virtual void endPacket() = 0;
 
+  /// Ends the sending of a message and sends it through a Stream
+  virtual void streamPacket(Stream* stream) {
+  	endPacket();
+  	stream->write( buffer(), size() );
+  }
+
   /// Create a packet with no arguments.
   virtual void packEmpty(const char *address)
   {
@@ -120,46 +126,45 @@ public:
     endPacket();
   }
 
-/*
-	virtual void streamPacket(Stream* stream) {
-		stream->write(buffer(), size());
-	}
-
-  /// Create a packetwith no arguments.
+  /// Create a packet with no arguments.
   virtual void streamEmpty(Stream* stream, const char *address)
   {
-    packEmpty(address);
+    beginPacket(address);
     streamPacket(stream);
   }
 
-  /// Create a packetwith single byte value.
-  virtual void streamOneByte(Stream* stream,const char *address, uint8_t value)
+  /// Create a packet with a single byte value.
+  virtual void streamOneByte(Stream* stream, const char *address, uint8_t value)
   {
-    packOneByte(address, value);
+    beginPacket(address);
+    addByte(value);
     streamPacket(stream);
   }
 
-  /// Create a packet with single int value.
-  virtual void streamOneInt(Stream* stream,const char *address, int16_t value)
+  /// Create a packet with a single int value.
+  virtual void streamOneInt(Stream* stream, const char *address, int16_t value)
   {
-    packOneInt(address, value);
+    beginPacket(address);
+    addInt(value);
     streamPacket(stream);
   }
 
-  /// Create a packet with single long value.
-  virtual void streamOneLong(Stream* stream,const char *address, int32_t value)
+  /// Create a packet with a single long value.
+  virtual void streamOneLong(Stream* stream, const char *address, int32_t value)
   {
-    packOneLong(address, value);
+    beginPacket(address);
+    addLong(value);
     streamPacket(stream);
   }
 
-    /// Create a packet with single float value.
-  virtual void streamOneFloat(Stream* stream,const char *address, float value)
+  /// Create a packet with a single float value.
+  virtual void streamOneFloat(Stream* stream, const char *address, float value)
   {
-    packOneFloat(address, value);
+    beginPacket(address);
+    addFloat(value);
     streamPacket(stream);
   }
-*/
+
 
 protected:
   // Writes single byte to buffer (returns false if buffer is full and cannot be written to).
