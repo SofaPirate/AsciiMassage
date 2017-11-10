@@ -51,8 +51,8 @@ public:
   virtual ~MassageParser() {}
 
   /**
-   * Reads one element of serial port, flushing previous message if needed.
-	 * Returns true iff new message has arrived.
+   * Reads one char, flushing previous message if needed.
+	 * Returns true if new message has been parsed.
 	 * Optional callback function will be called if new message has arrived.
    */
   virtual bool parse(int data, callbackFunction callback = 0)
@@ -73,6 +73,20 @@ public:
 	    return true;
     }
 
+    return false;
+  }
+
+  /**
+   * Reads all elements of a stream, flushing previous message if needed.
+   * Returns true if new message has been parsed.
+   * Optional callback function will be called if new message has arrived.
+   */
+  virtual bool parseStream(Stream* stream, callbackFunction callback = 0) {
+     while ( stream->available() ) {
+        if ( parse( stream->read() , callback ) ) {
+            return true;
+        }
+    }
     return false;
   }
 

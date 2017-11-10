@@ -65,9 +65,8 @@ void AsciiMassagePacker::addFloat(float value)
 void AsciiMassagePacker::endPacket()
 {
   write('\n');
-  //write(0);
-  //_messageSize--;
 }
+
 
 size_t AsciiMassagePacker::write(uint8_t data) {
 	MassagePacker::_store(data);
