@@ -83,7 +83,7 @@ public:
    */
   virtual bool parseStream(Stream* stream, callbackFunction callback = 0) {
      while ( stream->available() ) {
-        if ( parse( stream->read() ) ) {
+        if ( parse( stream->read() , callback ) ) {
             return true;
         }
     }
