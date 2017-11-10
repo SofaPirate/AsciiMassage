@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For Massenger
+# Syntax Coloring Map For Massage
 #######################################
 
 #######################################
@@ -19,6 +19,7 @@ AsciiMassageParser	KEYWORD1
 flush	KEYWORD2
 beginPacket	KEYWORD2
 endPacket	KEYWORD2
+streamPacket	KEYWORD2
 buffer	KEYWORD2
 size	KEYWORD2
 
@@ -28,6 +29,7 @@ addLong	KEYWORD2
 addFloat	KEYWORD2
 
 parse	KEYWORD2
+parseStream	KEYWORD2
 dispatch	KEYWORD2
 fullMatch	KEYWORD2
 
@@ -35,6 +37,18 @@ nextByte	KEYWORD2
 nextInt	KEYWORD2
 nextLong	KEYWORD2
 nextFloat	KEYWORD2
+
+packEmpty	KEYWORD2
+packOneByte	KEYWORD2
+packOneInt	KEYWORD2
+packOneFloat	KEYWORD2
+packOneLong	KEYWORD2
+
+streamEmpty	KEYWORD2
+streamOneByte	KEYWORD2
+streamOneInt	KEYWORD2
+streamOneFloat	KEYWORD2
+streamOneLong	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
