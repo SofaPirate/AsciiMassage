@@ -1,11 +1,12 @@
 // A PROCESSING EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND  INSIDE
-// "extras/applications/Processing/AsciiMassage_Processing/" OF THE FOLLOWING DOWNLOAD :
+// "extras/applications/Processing/AsciiMassage_Test_Processing/" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
 // A CYCLING 74 EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND INSIDE
-// "extras/applications/Cycling 74 Max 7/AsciiMassenger.maxpat" OF THE FOLLOWING DOWNLOAD :
+// "extras/applications/Cycling 74 Max 7/AsciiMassenger_Test.maxpat" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
+// THIS EXAMPLE SIMPLY ECHOS BACK A MASSAGE CONTAINING THE FOUR DATATPYES.
 
 // INCLUDE MASSAGE
 #include <AsciiMassagePacker.h>
@@ -69,7 +70,6 @@ void loop() {
   }
 
 }
-
 
 
 

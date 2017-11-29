@@ -5,7 +5,7 @@
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
 
-// INCLUDE THE CODE IN THE esp8266AP.h TAB.
+// INCLUDE ESP8266WiFi:
 #include <ESP8266WiFi.h>
 
 const char* ssid     = "******";
@@ -63,6 +63,5 @@ void loop() {
     }
   }
 }
-
 
 
