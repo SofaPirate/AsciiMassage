@@ -129,6 +129,9 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0) = 0;
 
+  /// Reads next string.
+  virtual int nextString(char* receivedString, int maxLength) = 0;
+
 protected:
   // Decodes a single value read from the serial stream (returns true if message is complete).
   virtual bool _decode(int serialByte) = 0;

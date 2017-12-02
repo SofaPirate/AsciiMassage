@@ -62,6 +62,14 @@ void AsciiMassagePacker::addFloat(float value)
   print(value);
 }
 
+void AsciiMassagePacker::addString(const char * value)
+{
+  write(' ');
+  write(34); // " char
+  print(value);
+  write(34); 
+}
+
 void AsciiMassagePacker::endPacket()
 {
   write('\n');

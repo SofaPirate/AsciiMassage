@@ -33,6 +33,8 @@ AsciiMassageParser::AsciiMassageParser() {
 void AsciiMassageParser::flush() {
   MassageParser::flush();
   _nextIndex = 0;
+  _parsingString = false;
+  _buffer[MASSAGE_PARSER_BUFFERSIZE -1] = 0;
 }
 
 int8_t AsciiMassageParser::nextByte(bool* error) {
@@ -66,13 +68,36 @@ float AsciiMassageParser::nextFloat(bool* error)
   return (float)v;
 }
 
+int AsciiMassageParser::nextString(char* receivedString, int maxLength) {
+  
+  if ( maxLength < 0 || !receivedString ) return 0;
+
+
+  int i = 0;
+  int limit = maxLength-1;
+
+  unsigned char* source = &_buffer[_nextIndex];
+
+  while ( i < limit && *source ) {
+    *receivedString = *source;
+    receivedString++;
+    source++;
+    i++;
+  }
+  
+  *receivedString = 0;
+
+  _updateNextIndex();
+
+  return i;
+}
+
 bool AsciiMassageParser::_decode(int streamByte)
 {
   // Check if we've reached the end of the buffer.
   if (_messageSize >= (MASSAGE_PARSER_BUFFERSIZE -1))
   {
-    _messageSize = MASSAGE_PARSER_BUFFERSIZE -1;
-    _store(0);
+
     flush();
     return false;
   }
@@ -96,13 +121,21 @@ bool AsciiMassageParser::_decode(int streamByte)
 
       flush();
       break;
-    case 0 :
+    case 0 : // this should never happen
     case ' ':
-      // Put null character instead of space to easily use atoi()/atof() functions.
-      if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
-      {
-        _store(0);
+
+     if ( _parsingString ) {
+          _store(' ');
+      } else {
+          // Put null character instead of space to easily use atoi()/atof() functions.
+          if (_messageSize > 0 && _buffer[_messageSize-1] != 0)
+          {
+            _store(0);
+          }
       }
+      break;
+    case 34 : // " character
+      _parsingString = !_parsingString;
       break;
     default: // caught a non-reserved character
       _store(streamByte);
@@ -113,8 +146,8 @@ bool AsciiMassageParser::_decode(int streamByte)
 
 bool AsciiMassageParser::_updateNextIndex()
 {
-  while (_buffer[_nextIndex] != 0) _nextIndex++;
-  _nextIndex++;
+  while (_buffer[_nextIndex] != 0) _nextIndex++; // move up till next null character (spaces are converted to null characters)
+  _nextIndex++; // skip the null character
   return (_nextIndex < _messageSize);
 }
 

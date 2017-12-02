@@ -44,6 +44,9 @@ public:
   /// Reads next float.
   virtual float nextFloat(bool* error=0);
 
+  // Reads next string.
+  virtual int nextString(char* receivedString, int maxLength);
+
   /// Flushes current message in buffer (if any).
   virtual void flush();
 
@@ -59,11 +62,15 @@ private:
   // Returns true iff it is still possible to call next*().
   bool _hasNext() const;
 
+  bool _parsingString;
+
   // Helper function to read next value.
   void _nextBlock(bool isInteger, uint8_t* value, size_t n, bool* error);
 
 	// Keeps track of next index where to store data in buffer.
   size_t _nextIndex;
+
+
 };
 
 

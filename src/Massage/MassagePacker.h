@@ -78,6 +78,9 @@ public:
   /// Adds a float.
   virtual void addFloat(float value) = 0;
 
+    /// Adds a float.
+  virtual void addString(const char* value) = 0;
+
   /// Ends the sending of a message.
   virtual void endPacket() = 0;
 
@@ -126,14 +129,22 @@ public:
     endPacket();
   }
 
-  /// Create a packet with no arguments.
+    /// Create a packet with a single string value.
+  virtual void packOneString(const char *address, const char* value)
+  {
+    beginPacket(address);
+    addString(value);
+    endPacket();
+  }
+
+  /// Stream a packet with no arguments.
   virtual void streamEmpty(Stream* stream, const char *address)
   {
     beginPacket(address);
     streamPacket(stream);
   }
 
-  /// Create a packet with a single byte value.
+  /// Stream a packet with a single byte value.
   virtual void streamOneByte(Stream* stream, const char *address, uint8_t value)
   {
     beginPacket(address);
@@ -141,7 +152,7 @@ public:
     streamPacket(stream);
   }
 
-  /// Create a packet with a single int value.
+  /// Stream a packet with a single int value.
   virtual void streamOneInt(Stream* stream, const char *address, int16_t value)
   {
     beginPacket(address);
@@ -149,7 +160,7 @@ public:
     streamPacket(stream);
   }
 
-  /// Create a packet with a single long value.
+  /// Stream a packet with a single long value.
   virtual void streamOneLong(Stream* stream, const char *address, int32_t value)
   {
     beginPacket(address);
@@ -157,11 +168,19 @@ public:
     streamPacket(stream);
   }
 
-  /// Create a packet with a single float value.
+  /// Stream a packet with a single float value.
   virtual void streamOneFloat(Stream* stream, const char *address, float value)
   {
     beginPacket(address);
     addFloat(value);
+    streamPacket(stream);
+  }
+
+    /// Stream a packet with a single string value.
+  virtual void streamOneFloat(Stream* stream, const char *address, const char * value)
+  {
+    beginPacket(address);
+    addString(value);
     streamPacket(stream);
   }
 

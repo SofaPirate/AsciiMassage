@@ -37,18 +37,21 @@ nextByte	KEYWORD2
 nextInt	KEYWORD2
 nextLong	KEYWORD2
 nextFloat	KEYWORD2
+nextString	KEYWORD2
 
 packEmpty	KEYWORD2
 packOneByte	KEYWORD2
 packOneInt	KEYWORD2
 packOneFloat	KEYWORD2
 packOneLong	KEYWORD2
+packOneString KEYWORD2
 
 streamEmpty	KEYWORD2
 streamOneByte	KEYWORD2
 streamOneInt	KEYWORD2
 streamOneFloat	KEYWORD2
 streamOneLong	KEYWORD2
+streamOneString	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

@@ -49,6 +49,9 @@ public:
   /// Adds a float.
   virtual void addFloat(float value);
 
+    /// Adds a string.
+  virtual void addString(const char * value);
+
   /// Ends the sending of a message.
   virtual void endPacket();
 
