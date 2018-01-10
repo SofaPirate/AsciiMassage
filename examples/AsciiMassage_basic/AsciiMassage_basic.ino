@@ -2,7 +2,7 @@
 // "extras/applications/Processing/AsciiMassage_Processing/" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
-// A CYCLING 74 EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND INSIDE 
+// A CYCLING 74 EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND INSIDE
 // "extras/applications/Cycling 74 Max 7/AsciiMassenger.maxpat" OF THE FOLLOWING DOWNLOAD :
 // https://github.com/SofaPirate/AsciiMassage/archive/master.zip
 
@@ -26,45 +26,30 @@ void setup() {
 
 }
 
-//////////////////////
-// SEND AND RECEIVE //
-//////////////////////
-// THE FOLLOWING FUNCTIONS ARE HELPER FUNCTIONS.
-// sendPacket() SENDS OUT A PRE-PACKED MASSAGE.
-// receivePacket() CHECK FOR A COMPLETED MASSAGE AND
-// INDICATES WHAT TO DO WITH ITS CONTENTS.
 
-// SEND A PRE-PACKED PACKET OVER SERIAL.
-void sendPacket() {
-  Serial.write(outbound.buffer(), outbound.size());
-}
-
-// RECEIVE OVER SERIAL AND PARSE ASCII PACKET
-void receivePacket() {
-  while ( Serial.available() ) {
-    // PARSE INPUT. RETURNS 1 (TRUE) IF MASSAGE IS COMPLETE.
-    if ( inbound.parse( Serial.read() ) ) {
-      if ( inbound.fullMatch("address") ) {
-      	byte byteValue = inbound.nextByte();
-        int intValue = inbound.nextInt();
-        float floatValue = inbound.nextFloat();
-        long longValue = inbound.nextLong();
-      } else {
-        // SEND "what?" WHEN A MASSAGE IS NOT RECOGNIZED.
-        outbound.packEmpty("what?");
-        sendPacket();
-      }
-    }
-  }
-}
 
 //////////
 // LOOP //
 //////////
 void loop() {
 
-  receivePacket();
- 
+  // PARSE SERIAL INPUT. RETURNS 1 (TRUE) IF A COMPLETE
+  // MASSAGE WAS RECEIVED:
+  if ( inbound.parseStream( &Serial ) ) {
+    // DOES THE MASSAGE START WITH THE WORD "address"?
+    if ( inbound.fullMatch("address") ) {
+      byte byteValue = inbound.nextByte();
+      int intValue = inbound.nextInt();
+      float floatValue = inbound.nextFloat();
+      long longValue = inbound.nextLong();
+    } else {
+      // SEND "what?" BECAUSE WE RECEIVED SOMETHING ELSE THAN "address"
+      // THE MASSAGE IS CONSIDERED EMPTY BECAUSE IT DOES NOT HAVE ANY ARGUMENTS
+      outbound.streamEmpty(&Serial, "what?");
+
+    }
+  }
+
 
   // BUILD A PACKET:
 
@@ -83,12 +68,8 @@ void loop() {
   /// Adds a float.
   outbound.addFloat(183.92);
 
-  /// Ends the sending of a message.
-  outbound.endPacket();
-  
-  // SEND THE PACKET:
-
-  sendPacket();
+  /// End and stream the massage packet:
+  outbound.streamPacket(&Serial);
 
 }
 

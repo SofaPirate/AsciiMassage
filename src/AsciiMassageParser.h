@@ -45,7 +45,7 @@ public:
   virtual float nextFloat(bool* error=0);
 
   // Reads next string.
-  virtual int nextString(char* receivedString, int maxLength);
+  virtual int nextString(char* receivedString, int bufferLength);
 
   /// Flushes current message in buffer (if any).
   virtual void flush();

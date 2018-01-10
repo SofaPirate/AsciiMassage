@@ -68,24 +68,24 @@ float AsciiMassageParser::nextFloat(bool* error)
   return (float)v;
 }
 
-int AsciiMassageParser::nextString(char* receivedString, int maxLength) {
+int AsciiMassageParser::nextString(char* destination, int bufferLength) {
   
-  if ( maxLength < 0 || !receivedString ) return 0;
+  if ( bufferLength < 1 || !destination ) return 0;
 
 
   int i = 0;
-  int limit = maxLength-1;
+  int limit = bufferLength-1;
 
   unsigned char* source = &_buffer[_nextIndex];
 
   while ( i < limit && *source ) {
-    *receivedString = *source;
-    receivedString++;
+    *destination = *source;
+    destination++;
     source++;
     i++;
   }
   
-  *receivedString = 0;
+  *destination = 0;
 
   _updateNextIndex();
 

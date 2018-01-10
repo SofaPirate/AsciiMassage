@@ -3,8 +3,8 @@
 // * the Serial protocol for sending the massage.
 
 
-// Include AsciiMassagePacker.h for ASCII format massage packing.
-#include <AsciiMassagePacker.h>
+// Include AsciiMassage
+#include <AsciiMassage.h>
 
 // Instantiate an AsciiMassagePacker for packing massages.
 AsciiMassagePacker outbound;
@@ -25,10 +25,7 @@ void loop() {
   outbound.beginPacket("value"); // Start a packet with the address called "value".
   outbound.addLong( millis() ); // Add the milliseconds.
   outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
-  outbound.endPacket(); // End the packet.
-
-  // Send the packet with the Serial protocol.
-  Serial.write( outbound.buffer(), outbound.size() );
+  outbound.streamPacket(&Serial); // End and send packet through Serial.
 
   // You can view the sent massages in Arduino's Serial Monitor
   // because Arduino's Serial Monitor uses the ASCII format.

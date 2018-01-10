@@ -1,21 +1,25 @@
 // This example uses :
-// * the ASCII format for packing the massage;
-// * the Serial protocol for sending the massage.
+// * the ASCII format for packing and parsing;
+// * the Serial protocol for sending and receiving.
 
-// INCLUDE MASSAGE
-#include <AsciiMassagePacker.h>
-#include <AsciiMassageParser.h>
+// It echoes back the string that follows an "echo" massage
+// followed by the length of the received string.
 
-// PACKER(FOR SENDING) AND PARSER(FOR RECEIVING) INSTANCES.
+
+// INCLUDE ASCII MASSAGE
+#include <AsciiMassage.h>
+
+
+// PACKER(FOR SENDING) AND PARSER(FOR RECEIVING).
 AsciiMassageParser inbound;
 AsciiMassagePacker outbound;
 
 // CREATE AN EMPTY STRING TO HOLD THE RECEIVED STRING.
-// AS DETERMINDED BY RECEIVED_STRING_MAX_SIZE, THIS EMPTY 
-// STRING CAN HOLD UP TO 63 CHARACTERS (THE LAST POSITION 
-// IS THE NULL CHARACTER THAT ENDS THE STRING).
-#define RECEIVED_STRING_MAX_SIZE 64
-char receivedString[RECEIVED_STRING_MAX_SIZE];
+// THIS EMPTY STRING CAN HOLD UP TO 63 CHARACTERS 
+// (THE LAST INDEX IS THE NULL CHARACTER THAT ENDS 
+// THE STRING).
+#define BUFFER_LENGTH 64
+char receivedString[BUFFER_LENGTH];
 
 
 void setup() {
@@ -32,12 +36,16 @@ void loop() {
 
       if ( inbound.fullMatch("echo") ) {
 
-        int stringLength = inbound.nextString(receivedString,RECEIVED_STRING_MAX_SIZE);
-        outbound.beginPacket("echo"); // Start a packet with the address called "echo".
+        // COPY THE RECEIVED STRING:
+        int stringLength = inbound.nextString(receivedString,BUFFER_LENGTH);
+
+        // ECHO THE RECEIVED STRING:
+        outbound.beginPacket("back"); // Start a packet with the address called "back".
         outbound.addString(receivedString);
         outbound.addInt(stringLength);
         outbound.streamPacket(&Serial); // End and stream the packet.
-        
+
+        // SEND ANOTHER STRING:
         outbound.beginPacket("test"); // Start a packet with the address called "test".
         outbound.addString("this is a string");
         outbound.streamPacket(&Serial); // End and stream the psacket.
