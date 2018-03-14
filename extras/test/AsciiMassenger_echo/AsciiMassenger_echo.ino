@@ -32,7 +32,7 @@ void loop() {
     outbound.addLong(millis());
     outbound.endPacket();
     
-    Serial.write(outbound.buffer());
+    Serial.write((const char *)outbound.buffer());
     
   }
 
@@ -52,7 +52,7 @@ void massageReceived() {
     outbound.addByte(b);
     outbound.endPacket();
     
-    Serial.write(outbound.buffer());
+    Serial.write((const char *)outbound.buffer());
     
   } else if ( inbound.fullMatch("ms") ) {
     
@@ -61,7 +61,7 @@ void massageReceived() {
   } else {
     
     outbound.packEmpty("what?");
-    Serial.write( outbound.buffer() , outbound.size() );
+    Serial.write(outbound.buffer() , outbound.size() );
     
   }
 }
