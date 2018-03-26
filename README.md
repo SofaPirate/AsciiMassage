@@ -49,17 +49,19 @@ if ( inbound.fullMatch ("value") ) {
 
 The complete block of code is as follows:
 ```
-    if ( inbound.parseStream( &Serial ) ) {
-       // parse completed massage elements here.
+ if ( inbound.parseStream( &Serial ) ) {
+    // parse completed massage elements here.
+
     // Does the massage's address match "value"?
-if ( inbound.fullMatch ("value") ) {
-    // Get the first long.
-    long ms = inbound.nextLong();
-    // Get the next int.
-    int an0 = inbound.nextInt();
-}
+    if ( inbound.fullMatch ("value") ) {
+        // Get the first long.
+        long ms = inbound.nextLong();
+        // Get the next int.
+        int an0 = inbound.nextInt();
+    }
 
     }
+```
 
 AsciiMassagePacker basic methods
 -------------
@@ -78,7 +80,6 @@ AsciiMassagePacker basic methods
 
 `addString(const char* string)` : Adds a string.
 
-
 `streamPacket( Stream* )` : Ends the packet and sends out the stream (Serial, UDP, etc).
 
 `streamEmpty(Stream*, const char *address)` : Stream a packet with no arguments.
@@ -91,7 +92,7 @@ AsciiMassagePacker basic methods
 
 `streamOneFloat(Stream*, const char *address, float value)` : Stream a packet with a single float element.
 
-streamOneString(Stream* , const char *address, const char * string) : Stream a packet with a single string element.
+`streamOneString(Stream* , const char *address, const char * string)` : Stream a packet with a single string element.
 
 
 
@@ -103,7 +104,6 @@ AsciiMassageParser basic methods
 `parseStream ( Stream)` : Reads the stream, flushing previous message if needed. Returns true if a new message has arrived. 
  
 `fullMatch (const char *address)` : Return true if current message matches "address".
- 
  
 `nextByte ()` : Returns next byte in the parsed massage.
 
