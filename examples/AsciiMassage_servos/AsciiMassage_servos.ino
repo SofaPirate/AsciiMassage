@@ -1,7 +1,7 @@
-// THIS EXAMPLE SHOWS HOW TO CONTROL A SERVOMOTOR ATTACHED TO PIN 9
+// THIS EXAMPLE SHOWS HOW TO CONTROL SERVOMOTORS ATTACHED TO PINS 9 AND 11
 // WITH ASCIIMASSAGE.
-// THE "angle" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN DEGREES.
-// THE "us" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN MICROSECONDS.
+// THE "s1" MASSAGE WILL CONTROL THE ANGLE OF THE FIRST SERVO.
+// THE "s2" MASSAGE WILL CONTROL THE ANGLE OF THE SECOND SERVO.
 
 // A PROCESSING EXAMPLE TO COMMUNICATE WITH THIS SKETCH CAN BE FOUND  INSIDE
 // "extras/applications/Processing/" OF THE FOLLOWING DOWNLOAD :
@@ -37,43 +37,34 @@ void setup() {
   // INITIATE SERIAL COMMUNICATION.
   Serial.begin(57600);
 
-  // ATTACH THE SERVOS TO PINS 11 AND 12
-  servo1.attach(11);
-  servo2.attach(12);
+  // ATTACH THE SERVOS TO PINS 9 AND 11:
+  servo1.attach(9);
+  servo2.attach(11);
 
   pinMode(13,OUTPUT);
 
 }
 
-//////////////////////
-// SEND AND RECEIVE //
-//////////////////////
-// THE FOLLOWING FUNCTIONS ARE HELPER FUNCTIONS.
-// sendPacket() SENDS OUT A PRE-PACKED MASSAGE.
-// receivePacket() CHECK FOR A COMPLETED MASSAGE AND
-// INDICATES WHAT TO DO WITH ITS CONTENTS.
 
-// SEND PACKED PACKET OVER SERIAL.
-void sendPacket() {
-  Serial.write(outbound.buffer(), outbound.size());
-}
 
-// RECEIVE OVER SERIAL AND PARSE ASCII PACKET
-void receivePacket() {
-  while ( Serial.available() ) {
+//////////
+// LOOP //
+//////////
+void loop() {
+
     // PARSE INPUT. RETURNS 1 (TRUE) IF MASSAGE IS COMPLETE.
-    if ( inbound.parse( Serial.read() ) ) {
+    if ( inbound.parseStream( &Serial ) ) {
 
       // CHANGE DEBUG LED STATE WHEN A MASSAGE IS RECEIVED.
       digitalWrite(13, !digitalRead(13));
 
-      // THE "angle" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN DEGREES.
+      // THE "s1" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN DEGREES.
       if ( inbound.fullMatch("s1") ) {
 
         int value = inbound.nextInt();
         servo1.write( value );
 
-      // THE "us" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN MICROSECONDS.
+      // THE "s2" MASSAGE WILL CONTROL THE ANGLE OF THE SERVO IN MICROSECONDS.
       } else if ( inbound.fullMatch("s2") ) {
 
         int value = inbound.nextInt();
@@ -81,19 +72,9 @@ void receivePacket() {
 
       // SEND "what?" WHEN A MASSAGE IS NOT RECOGNIZED.
       } else {
-        outbound.packEmpty("what?");
-        sendPacket();
+        outbound.streamEmpty("what?");
       }
     }
-  }
-}
-
-//////////
-// LOOP //
-//////////
-void loop() {
-
-  receivePacket();
 
 }
 

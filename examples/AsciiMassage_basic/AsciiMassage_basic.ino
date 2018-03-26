@@ -15,6 +15,9 @@
 AsciiMassageParser inbound;
 AsciiMassagePacker outbound;
 
+// THIS VARIABLE IS USED TO SLOW DOWN THE SENDING OF THE MASSAGES.
+unsigned long lastTimeMassageSent;
+
 
 ///////////
 // SETUP //
@@ -50,29 +53,33 @@ void loop() {
     }
   }
 
+  // SEND A PACKET EVERY 100 ms:
+  if ( millis() - lastTimeMassageSent >= 100 ) {
+    lastTimeMassageSent = millis();
 
-  // BUILD A PACKET:
+    // BUILD A PACKET:
 
-  /// Begins the sending of a message.
-  outbound.beginPacket("address");
-
-  /// Adds a byte.
-  outbound.addByte(45);
-
-  /// Adds an int.
-  outbound.addInt(1024);
-
-  /// Adds a long.
-  outbound.addLong(64823);
-
-  /// Adds a float.
-  outbound.addFloat(183.92);
-
-  /// End and stream the massage packet:
-  outbound.streamPacket(&Serial);
+    /// Begins the sending of a message.
+    outbound.beginPacket("address");
+  
+    /// Adds a byte.
+    outbound.addByte(45);
+  
+    /// Adds an int.
+    outbound.addInt(1024);
+  
+    /// Adds a long.
+    outbound.addLong(64823);
+  
+    /// Adds a float.
+    outbound.addFloat(183.92);
+  
+    /// End and stream the massage packet:
+    outbound.streamPacket(&Serial);
+  }
+ 
 
 }
-
 
 
 

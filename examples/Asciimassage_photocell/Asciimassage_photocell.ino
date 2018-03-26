@@ -1,7 +1,8 @@
-// ICLUDE CHRONO
+// ICLUDE Chrono (INSTALL Chrono WITH ARDUINO'S LIBRARY MANAGER )
 #include <Chrono.h>
 
-Chrono messageSendInterval = Chrono();
+// Chrono USED TO SEND A MASSAGE EVERY 100 ms:
+Chrono messageSendChrono = Chrono();
 
 // ICLUDE MASSAGE PACKER
 #include <AsciiMassagePacker.h>
@@ -17,17 +18,17 @@ void setup() {
 }
 
 void loop() {
-
-  if ( messageSendInterval.hasPassed(100) ) {
-    messageSendInterval.restart();
+  
+  // SEND A MASSAGE EVERY 100 ms:
+  if ( messageSendChrono.hasPassed(100) ) {
+    messageSendChrono.restart();
 
     int photocellReading = analogRead( A0 );
 
-    outbound.beginPacket("a0");
+    outbound.beginPacket("photo");
     outbound.addInt( photocellReading );
-    outbound.endPacket();
-
-    Serial.write(outbound.buffer(), outbound.size());
+    
+    outbound.streamPacket(&Serial);
 
   }
 
