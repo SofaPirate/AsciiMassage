@@ -177,10 +177,10 @@ public:
   }
 
     /// Stream a packet with a single string value.
-  virtual void streamOneFloat(Stream* stream, const char *address, const char * value)
+  virtual void streamOneString(Stream* stream, const char *address, const char * s)
   {
     beginPacket(address);
-    addString(value);
+    addString(s);
     streamPacket(stream);
   }
 
