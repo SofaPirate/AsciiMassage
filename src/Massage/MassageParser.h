@@ -55,6 +55,7 @@ public:
 	 * Returns true if new message has been parsed.
 	 * Optional callback function will be called if new message has arrived.
    */
+   [[deprecated("Please us parseStream() instead")]]
   virtual bool parse(int data, callbackFunction callback = 0)
   {
 		// Flush if needed.

@@ -25,34 +25,49 @@
 #include "Massage/MassagePacker.h"
 #include "Print.h"
 
-/// Main AsciiMassagePacker class.
-// Maybe Print should be private !!!
-// Print should be instantiated and not extended
+/**
+ AsciiMassagePacker class
+ */
 class AsciiMassagePacker : public MassagePacker, private Print
 {
 public:
-  /// Constructor.
+  /**
+ Constructor
+ */
   AsciiMassagePacker();
-
-   /// Begins the sending of a message.
+  /**
+  Begins the sending of a message.
+   */
   virtual void beginPacket(const char* address);
 
-  /// Adds a byte.
+  /**
+  Adds a byte.
+   */
   virtual void addByte(uint8_t value);
 
-  /// Adds an int.
+  /**
+  Adds an int.
+   */
   virtual void addInt(int16_t value);
 
-  /// Adds a long.
+    /**
+  Adds a long.
+   */
   virtual void addLong(int32_t value);
 
-  /// Adds a float.
+   /**
+  Adds a float.
+   */
   virtual void addFloat(float value);
 
-    /// Adds a string.
+   /**
+  Adds a string.
+   */
   virtual void addString(const char * value);
 
-  /// Ends the sending of a message.
+  /**
+  [[Deprecated]] Ends a packet.
+  */
   virtual void endPacket();
 
 
