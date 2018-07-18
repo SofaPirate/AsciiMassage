@@ -17,13 +17,13 @@ Sending (packing) a massage example
 -------------------------------------
 
 Add the library to the top of your code and instantiate an AsciiMassagePacker called "outbound":
-```
+```cpp
 #include <AsciiMassagePacker.h>
 AsciiMassagePacker outbound;
 ```
 
 Pack a *massage* and then steam it through Serial:
-```
+```cpp
 outbound.beginPacket("value"); // Start a packet with the address called "value".
 outbound.addLong( millis() ); // Add the milliseconds.
 outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
@@ -34,19 +34,19 @@ Receiving (parsing) a massage example
 ---------------------------------------
 
 Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
-```
+```cpp
 #include <AsciiMassageParser.h>
 AsciiMassageParser inbound;
 ```
 Inside loop() parse the Serial stream with parse(). If parse() returns true, the massage is completed and ready.
-```
+```cpp
     if ( inbound.parseStream( &Serial ) ) {
        // parse completed massage elements here.
     }
 ```
 
 This example parses the elements of a  massage that starts with the address "value" and that contains one long followed by one int:
-```
+```cpp
 // Does the massage's address match "value"?
 if ( inbound.fullMatch ("value") ) {
     // Get the first long.
@@ -57,7 +57,7 @@ if ( inbound.fullMatch ("value") ) {
 ```
 
 The complete block of code is as follows:
-```
+```cpp
 #include <AsciiMassageParser.h>
 AsciiMassageParser inbound;
 
