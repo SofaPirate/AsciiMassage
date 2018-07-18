@@ -11,7 +11,7 @@ https://github.com/SofaPirate/AsciiMassage
 
 ## DOCUMENTATION
 
-The complete class documentation can be found in the "docs" folder or [online here](http://SofaPirate.github.io/AsciiMassage/).
+The complete class documentation can be found in the "docs" folder or [online here](https://sofapirate.github.io/AsciiMassage/).
 
 Sending (packing) a massage example
 -------------------------------------
