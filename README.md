@@ -13,23 +13,6 @@ https://github.com/SofaPirate/AsciiMassage
 
 The complete class documentation can be found in the "docs" folder or [online here](https://sofapirate.github.io/AsciiMassage/).
 
-Sending (packing) a massage example
--------------------------------------
-
-Add the library to the top of your code and instantiate an AsciiMassagePacker called "outbound":
-```cpp
-#include <AsciiMassagePacker.h>
-AsciiMassagePacker outbound;
-```
-
-Pack a *massage* and then steam it through Serial:
-```cpp
-outbound.beginPacket("value"); // Start a packet with the address called "value".
-outbound.addLong( millis() ); // Add the milliseconds.
-outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
-outbound.streamPacket(&Serial); // End the packet and stream it.
-```
-
 Receiving (parsing) a massage example
 ---------------------------------------
 
@@ -80,4 +63,21 @@ void loop() {
 
     // [...]
 }
+```
+
+Sending (packing) a massage example
+-------------------------------------
+
+Add the library to the top of your code and instantiate an AsciiMassagePacker called "outbound":
+```cpp
+#include <AsciiMassagePacker.h>
+AsciiMassagePacker outbound;
+```
+
+Pack a *massage* and then steam it through Serial:
+```cpp
+outbound.beginPacket("value"); // Start a packet with the address called "value".
+outbound.addLong( millis() ); // Add the milliseconds.
+outbound.addInt( analogRead(0) ); // Add a reading of analog 0.
+outbound.streamPacket(&Serial); // End the packet and stream it.
 ```
