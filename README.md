@@ -52,18 +52,18 @@ AsciiMassageParser inbound;
 
 void loop() {
 
- if ( inbound.parseStream( &Serial ) ) {
-    // parse completed massage elements here.
+   if ( inbound.parseStream( &Serial ) ) {
+      // parse completed massage elements here.
 
-    // Does the massage's address match "value"?
-    if ( inbound.fullMatch ("value") ) {
-        // Get the first long.
-        long ms = inbound.nextLong();
-        // Get the next int.
-        int an0 = inbound.nextInt();
-    }
+      // Does the massage's address match "value"?
+      if ( inbound.fullMatch ("value") ) {
+          // Get the first long.
+          long ms = inbound.nextLong();
+          // Get the next int.
+          int an0 = inbound.nextInt();
+      }
 
- }
+   }
 
     // [...]
 }
