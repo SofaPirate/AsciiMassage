@@ -13,19 +13,23 @@ https://github.com/SofaPirate/AsciiMassage
 
 The complete class documentation can be found in the "docs" folder or [online here](https://sofapirate.github.io/AsciiMassage/).
 
-Receiving (parsing) a massage example
----------------------------------------
+
+
+
+Receiving (parsing) a massage directly in loop()
+--------------------------------------------------------
 
 Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
 ```cpp
 #include <AsciiMassageParser.h>
 AsciiMassageParser inbound;
 ```
+
 Inside loop() parse the Serial stream with parse(). If parse() returns true, the massage is completed and ready.
 ```cpp
-    if ( inbound.parseStream( &Serial ) ) {
-       // parse completed massage elements here.
-    }
+if ( inbound.parseStream( &Serial ) ) {
+ // parse completed massage elements here.
+}
 ```
 
 This example parses the elements of a  massage that starts with the address "value" and that contains one long followed by one int:
@@ -59,12 +63,59 @@ void loop() {
         int an0 = inbound.nextInt();
     }
 
-    }
+ }
 
     // [...]
 }
 ```
 
+Receiving (parsing) a massage with a receive function
+--------------------------------------------------------
+Add the library to the top of your code and instantiate an AsciiMassageParser called "inbound":
+```cpp
+#include <AsciiMassageParser.h>
+AsciiMassageParser inbound;
+```
+
+Add before loop() a function the will be called when a message is received
+```cpp
+void readMessage() {
+   // parse completed massage elements here.
+}
+```
+
+Inside loop() parse the Serial stream with parse() and run "readMessage" when a message is received
+```cpp
+inbound.parseStream( &Serial , readMessage );
+```
+
+The complete block of code is as follows:
+```cpp
+#include <AsciiMassageParser.h>
+AsciiMassageParser inbound;
+
+// [...]
+
+void readMessage() {
+    // parse completed massage elements here.
+
+    // Does the massage's address match "value"?
+    if ( inbound.fullMatch ("value") ) {
+        // Get the first long.
+        long ms = inbound.nextLong();
+        // Get the next int.
+        int an0 = inbound.nextInt();
+    }
+
+}
+
+void loop() {
+
+inbound.parseStream( &Serial , readMessage );
+
+    // [...]
+}
+```
 Sending (packing) a massage example
 -------------------------------------
 
