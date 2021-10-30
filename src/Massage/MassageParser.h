@@ -42,6 +42,35 @@ class MassageParser
 public:
   typedef void (*callbackFunction)(void);
 
+    /**
+   * Reads one char, flushing previous message if needed.
+   * Returns true if new message has been parsed.
+   * Optional callback function will be called if new message has arrived.
+   */
+private:
+  virtual bool parse(int data, callbackFunction callback = 0)
+  {
+    // Flush if needed.
+    if ( _needToFlush) {
+      flush();
+    }
+
+    // Read stream.
+    if ( _decode(data) ) {
+      _needToFlush = true;
+
+      // Call optional callback.
+      if (callback)
+        callback();
+
+      return true;
+    }
+
+    return false;
+  }
+
+public:
+
   /// Constructor.
   MassageParser( ) {
     flush();
@@ -50,32 +79,7 @@ public:
   // Virtual destructor.
   virtual ~MassageParser() {}
 
-  /**
-   * Reads one char, flushing previous message if needed.
-	 * Returns true if new message has been parsed.
-	 * Optional callback function will be called if new message has arrived.
-   */
-   [[deprecated("Please us parseStream() instead")]]
-  virtual bool parse(int data, callbackFunction callback = 0)
-  {
-		// Flush if needed.
-    if ( _needToFlush) {
-      flush();
-    }
 
-    // Read stream.
-    if ( _decode(data) ) {
-     	_needToFlush = true;
-
-			// Call optional callback.
-      if (callback)
-	    	callback();
-
-	    return true;
-    }
-
-    return false;
-  }
 
   /**
    * Reads all elements of a stream, flushing previous message if needed.
